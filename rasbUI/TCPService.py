@@ -10,7 +10,6 @@ class TCPService():
 
     def __init__(self):#TCP服务构造函数，在中控初始化时调用，以便先设置好套接字并开始监听是否有手机客户端接入
         self.server=socket.socket(socket.AF_INET,socket.SOCK_STREAM)#构造套接字，设置为面向网络的TCP模式
-        self.server.setblocking(False)#设置为非阻塞模式，无需等待上一次的数据发送完毕
         self.server.bind((HOST,PORT))#绑定IP地址和端口号
         self.server.listen(1)#开始监听客户端的接入，因为是TCP协议，因此设置最大接入数量为1
 
