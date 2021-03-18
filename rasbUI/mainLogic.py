@@ -14,6 +14,7 @@ import camera
 from is_sleep import is_sleep
 
 import detect
+import UDPService as udp
 
 window_width = 960
 window_height = 720
@@ -27,15 +28,19 @@ butpos_y = 450
 # 选择摄像头
 warning = camera.makeWarning()
 start_time = time.perf_counter()
-detect.vs = VideoStream(src=0).start()
+detect.vs = VideoStream(src=1).start()
 
+#初始化UDP服务
+udpS=udp.UDPService('100.150.110.15')
 
 def cnt_time():
     return (time.perf_counter() - start_time) % 2
 
 
 def video():
+    global udpS
     def video_loop():
+        global udpS
         try:
             start = time.perf_counter()
             warning = camera.makeWarning()
@@ -43,6 +48,7 @@ def video():
             while True:
                 frame = detect.get_video()
                 res = detect.video_object(frame)
+                udpS.sendFrame(res)
                 (light_detection, light_is_on) = detect.brake_light(frame)
                 if light_is_on:
                     light_is_on = False

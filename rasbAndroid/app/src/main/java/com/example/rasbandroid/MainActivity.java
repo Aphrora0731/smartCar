@@ -1,6 +1,8 @@
 package com.example.rasbandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,16 +13,19 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 //    private static TextView t;
-    private static ImageView frameView;
-    private static Button connectBtn;
+    private ImageView frameView;
+    private Button connectBtn;
     private static Handler handler=new Handler();
-    private static Bitmap currentFrame;
+    private Bitmap currentFrame;
     private Intent serviceIntent;
+    public static Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context=this;
         frameView=(ImageView)findViewById(R.id.imageView);
         connectBtn=(Button)findViewById(R.id.connect);
         serviceIntent=new Intent(this,UDPService.class);
@@ -33,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void updateFrame(Bitmap frame){
-        currentFrame=frame;
+        ((MainActivity)context).currentFrame=frame;
         handler.post(RefreshFrame);
     }
 
     private static Runnable RefreshFrame=new Runnable() {
         @Override
         public void run() {
-            frameView.setImageBitmap(currentFrame);
+            ((MainActivity)context).frameView.setImageBitmap(((MainActivity)context).currentFrame);
         }
     };
 

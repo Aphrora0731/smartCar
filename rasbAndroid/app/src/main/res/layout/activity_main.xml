@@ -9,11 +9,10 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="400px"
-        android:layout_height="300px"
+        android:layout_width="800px"
+        android:layout_height="600px"
         android:layout_gravity="center"
-        android:layout_margin="100px"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:layout_margin="100px"/>
     <Button
         android:id="@+id/connect"
         android:layout_width="wrap_content"
