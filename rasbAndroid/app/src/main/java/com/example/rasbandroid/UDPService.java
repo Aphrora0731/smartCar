@@ -17,24 +17,35 @@ import java.net.SocketTimeoutException;
 
 public class UDPService extends Service {
 
-    private boolean stopReceive=false;
     private int port=8080;
+    private DatagramSocket socket=null;
+    private NoticeBinder mBinder=new NoticeBinder();
+    class NoticeBinder extends Binder {
+    }
     public UDPService() {
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("in","serviceStart");
-        startReceiveThread();
-        return super.onStartCommand(intent, flags, startId);
-    }
-
+//    @Override
+//    public int onStartCommand(Intent intent, int flags, int startId) {
+//        Log.d("in","serviceStart");
+////        startReceiveThread();
+//        return super.onStartCommand(intent, flags, startId);
+//    }
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
+        startReceiveThread();
         return mBinder;
     }
 
+    @Override
+    public boolean onUnbind(Intent intent) {
+        if(socket!=null){
+            socket.close();
+            socket=null;
+            MainActivity.updateFrame(null);
+        }
+        return true;
+    }
     /**
      * Start the frame receive thread
      */
@@ -43,14 +54,13 @@ public class UDPService extends Service {
             @Override
             public void run() {
                 super.run();
-                DatagramSocket socket=null;
                 try{
                     socket=new DatagramSocket(port);
                     socket.setSoTimeout(10000);
                     byte[] data=new byte[65536];
                     DatagramPacket packet=new DatagramPacket(data,data.length);
                     Log.d("inRecv","initsucess");
-                    while(!stopReceive){
+                    while(socket!=null){
                         try{
 //                            Log.d("inRecvLoop","beforerecv");
                             socket.receive(packet);
@@ -67,25 +77,14 @@ public class UDPService extends Service {
                     }
                 }catch (IOException e){
                     e.printStackTrace();
-                }finally {
-                    if(socket!=null){
-                        socket.close();
-                        socket=null;
-                    }
                 }
             }
         }.start();
     }
 
-    private NoticeBinder mBinder=new NoticeBinder();
-    class NoticeBinder extends Binder {
-        /**
-         * Notice the Frame receive thread to stop
-         */
-        void stopFrameRecThread(){
-            stopReceive=true;
-        }
-
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
     }
 }
 

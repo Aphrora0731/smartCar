@@ -31,7 +31,7 @@ start_time = time.perf_counter()
 detect.vs = VideoStream(src=1).start()
 
 #初始化UDP服务
-udpS=udp.UDPService('100.150.110.15')
+udpS=udp.UDPService('100.94.176.175')
 
 def cnt_time():
     return (time.perf_counter() - start_time) % 2
