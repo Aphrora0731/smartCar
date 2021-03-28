@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/rasbUI.iml" filepath="$PROJECT_DIR$/.idea/rasbUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/QtUi.iml" filepath="$PROJECT_DIR$/.idea/QtUi.iml" />
     </modules>
   </component>
 </project>
