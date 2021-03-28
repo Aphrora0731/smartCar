@@ -28,10 +28,10 @@ butpos_y = 450
 # 选择摄像头
 warning = camera.makeWarning()
 start_time = time.perf_counter()
-detect.vs = VideoStream(src=1).start()
+detect.vs = VideoStream(src=0).start()
 
 #初始化UDP服务
-udpS=udp.UDPService('100.94.176.175')
+udpS=udp.UDPService('10.86.99.134')
 
 def cnt_time():
     return (time.perf_counter() - start_time) % 2

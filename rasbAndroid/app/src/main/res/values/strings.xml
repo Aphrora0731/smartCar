@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">rasbAndroid</string>
+    <string name="app_name">ADAS</string>
+    <string name="title_home">主页</string>
+    <string name="title_route">路线</string>
+    <string name="title_condition">状态</string>
+    <string name="words_home">WELCOCME TO ADAS!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

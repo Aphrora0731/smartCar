@@ -2,7 +2,7 @@ import cv2
 import socket
 import time
 import struct
-import multiprocessing
+import threading
 
 class TCPService():
     HOST='localhost'#服务器端IP地址
@@ -24,21 +24,26 @@ class TCPService():
                     self.conn.close()
                     self.conn=None
 
-        t=multiprocessing.Process(target=link_loop,daemon=True)
+        t=threading.Thread(target=link_loop,daemon=True)
+        t.start()
 
     def isLinked(self):#判断是否有客户端接入函数，用于发送帧前的判断，若无接入的客户端，请不要调用sendFrame()函数发送帧
         return self.conn is not None
 
-    def sendFrame(self,frame):#发送帧函数，请在中控循环获取每一帧的摄像头数据并解析和显示画面的函数中循环调用，传入cap.read()函数获取的frame
+    def sendMsg(self,message):#发送帧函数，请在中控循环获取每一帧的摄像头数据并解析和显示画面的函数中循环调用，传入cap.read()函数获取的frame
         if not self.isLinked:
             print('客户端未连接！')
             return
-        try:
-            result,imgData=cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,90])#编码为JPEG格式的二进制字符串
-            self.conn.sendall(imgData)#发送全部二进制串
-        except Exception as e:
-            self.conn.sendall(struct.pack('b',1))
-            print(e)
+        def runSend():
+            try:
+                msgData=message.encode('utf-8')#将字符串转换为二进制串
+                self.conn.sendall(msgData)#发送全部二进制串
+            except Exception as e:
+                self.conn.sendall(struct.pack('b',1))
+                print(e)
+        
+        t=threading.Thread(target=runSend,daemon=True)
+        t.start()
 
     def __del__(self):
         if self.isLinked():

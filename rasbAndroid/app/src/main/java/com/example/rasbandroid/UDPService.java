@@ -8,19 +8,18 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.*;
 import java.net.SocketTimeoutException;
 
 public class UDPService extends Service {
 
     private int port=8080;
     private DatagramSocket socket=null;
-    private NoticeBinder mBinder=new NoticeBinder();
-    class NoticeBinder extends Binder {
+    private UDPBinder mBinder=new UDPBinder();
+    public class UDPBinder extends Binder {
     }
     public UDPService() {
     }
@@ -42,7 +41,7 @@ public class UDPService extends Service {
         if(socket!=null){
             socket.close();
             socket=null;
-            MainActivity.updateFrame(null);
+            CameraActivity.updateFrame(null);
         }
         return true;
     }
@@ -73,18 +72,13 @@ public class UDPService extends Service {
                             throw ioe;
                         }
                         Bitmap bitmap= BitmapFactory.decodeByteArray(data,0,packet.getLength());
-                        MainActivity.updateFrame(bitmap);
+                        CameraActivity.updateFrame(bitmap);
                     }
                 }catch (IOException e){
                     e.printStackTrace();
                 }
             }
         }.start();
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
     }
 }
 
