@@ -47,7 +47,7 @@ def eye_aspect_ratio(eye):
 #   眼球必须低于阈值才能引起眼睛不适
 # 警报
 # EYE_AR_THRESH = 0.3 最初的参数
-EYE_AR_THRESH = 0.21  # 眼睛的宽和长之比
+EYE_AR_THRESH = 0.3  # 眼睛的宽和长之比
 EYE_AR_CONSEC_FRAMES = 48  # 眼睛连续闭上的帧数，如果超过48帧就发出警报
 
 # initialize the frame counter as well as a boolean used to
@@ -76,9 +76,10 @@ def is_sleep(frame):
     # grab the frame from the threaded video file stream, resize
     # it, and convert it to grayscale
     # channels)
+    global COUNTER
+    global ALARM_ON
     frame = imutils.resize(frame, width=450)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  # 将图片转换成灰度图像
-
     # detect faces in the grayscale frame
     rects = detector(gray, 0)  # 应用面部检测器来定位图中脸的位置
 
@@ -106,7 +107,6 @@ def is_sleep(frame):
         rightEyeHull = cv2.convexHull(rightEye)
         cv2.drawContours(frame, [leftEyeHull], -1, (0, 255, 0), 1)  # 第一个参数是图像 2、轮廓 3、对轮廓的索引 -1表示全部绘制
         cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)  # 4、颜色  5、 厚度
-
         # check to see if the eye aspect ratio is below the blink  开始检测
         # threshold, and if so, increment the blink frame counter
         if ear < EYE_AR_THRESH:  # 如果宽长比小于设定的值，就开始计算帧数
@@ -118,7 +118,6 @@ def is_sleep(frame):
                 # if the alarm is not on, turn it on
                 if not ALARM_ON:
                     ALARM_ON = True
-
                     # check to see if an alarm file was supplied,
                     # and if so, start a thread to have the alarm
                     # sound played in the background
@@ -129,7 +128,7 @@ def is_sleep(frame):
                         t.start()
 
                 # draw an alarm on the frame
-                cv2.putText(frame, "警告!", (10, 30),  # 1、图片  2、 显示的字符串 3、第一个字符左下角的坐标 4、字体结构初始化
+                cv2.putText(frame, "WARNING!", (10, 30),  # 1、图片  2、 显示的字符串 3、第一个字符左下角的坐标 4、字体结构初始化
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)  # 5、字体的颜色  6、 字体宽度
 
         # otherwise, the eye aspect ratio is not below the blink
@@ -145,5 +144,5 @@ def is_sleep(frame):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
     # show the frame
-    return frame, ALARM_ON
+    return frame
 # do a bit of cleanup

@@ -1,124 +1,134 @@
-import _thread
-import time
-import tkinter as tk
-from tkinter import *
-import imutils
-from threading import Thread
-from imutils.video import VideoStream
-import tkinter.ttk as ttk
+from PyQt5.QtGui import QColor
+
+from GUI_console import Ui_MainWindow
+# from new import Ui_MainWindow
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsDropShadowEffect, QGraphicsOpacityEffect
+from PyQt5.QtCore import QTimer, QDateTime, QRectF, Qt
+from PyQt5 import QtGui
+
+from PyQt5.Qt import QPropertyAnimation, QPoint
+import PyQt5.QtWidgets
 import cv2
-from PIL import Image, ImageTk
-import multiprocessing
-import mylib
-import camera
-from is_sleep import is_sleep
-
 import detect
-import UDPService as udp
-
-window_width = 960
-window_height = 720
-image_width = int(window_width * 0.9)
-image_height = int(window_height * 0.9)
-imagepos_x = 0
-imagepos_y = 0
-butpos_x = 450
-butpos_y = 450
-
-# 选择摄像头
-warning = camera.makeWarning()
-start_time = time.perf_counter()
-detect.vs = VideoStream(src=1).start()
-
-#初始化UDP服务
-udpS=udp.UDPService('100.94.176.175')
-
-def cnt_time():
-    return (time.perf_counter() - start_time) % 2
+import time
+from threading import Thread
+import mylib
 
 
-def video():
-    global udpS
-    def video_loop():
-        global udpS
-        try:
-            start = time.perf_counter()
-            warning = camera.makeWarning()
-            i = 0
-            while True:
-                frame = detect.get_video()
-                res = detect.video_object(frame)
-                udpS.sendFrame(res)
-                (light_detection, light_is_on) = detect.brake_light(frame)
-                if light_is_on:
-                    light_is_on = False
-                    i = i + 1
-                    print("light is on", i)
-                    end = time.perf_counter()
-                    print(end, start)
-                    if end - start > 4:
-                        t = Thread(target=mylib.sound_alarm)
-                        t.deamon = True  # 守护进程
-                        t.start()
-                        start = time.perf_counter()
-                res = cv2.cvtColor(res, cv2.COLOR_BGR2RGB)
-                picture1 = Image.fromarray(res)
-                picture1 = ImageTk.PhotoImage(picture1)
-                canvas.create_image(0, 0, anchor='nw', image=picture1)
-                dif = time.perf_counter() - start
-                dif = dif % 2
-                win.update_idletasks()
-                win.update()
-        except:
-            pass
+class Console(QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        super(Console, self).__init__()
+        self.is_blind_area = False
+        self.setupUi(self)
+        self.timer = QTimer(self)
+        self.warning_timer = QTimer(self)
+        self.warning_timer.start(100)
+        self.timer.start(30)
+        self.timer_2 = QTimer(self)
+        self.camera = cv2.VideoCapture(0)
+        self.init_slot()
+        self.is_front = True
+        self.setWindowFlags(Qt.FramelessWindowHint)
 
-    video_loop()
-    win.mainloop()
-    cv2.destroyAllWindows()
+        self.effect_shadow = QGraphicsDropShadowEffect(self)
+        self.btn1_shadow = QGraphicsDropShadowEffect(self)
+        self.btn2_shadow = QGraphicsDropShadowEffect(self)
+
+        self.effect_shadow.setOffset(0, 0)  # 偏移
+        self.effect_shadow.setBlurRadius(100)  # 阴影半径
+        self.effect_shadow.setColor(QColor(0x0099FF))  # 阴影颜色
+        self.label.setGraphicsEffect(self.effect_shadow)  # 将设置套用到widget窗口中
+
+        self.font = QtGui.QFont()
+        self.font.setFamily('微软雅黑')
+        self.font.setBold(True)
+        self.font.setPointSize(16)
+        self.font.setWeight(50)
+        op = QGraphicsOpacityEffect()
+        # 设置透明度的值，0.0到1.0，最小值0是透明，1是不透明
+        op.setOpacity(0.8)
+        self.pushButton_2.setFont(self.font)
+        self.pushButton_3.setFont(self.font)
+
+    def init_slot(self):
+        # Default
+        self.timer.timeout.connect(self.play_front_camera)
+        self.timer.timeout.connect(self.play_back_camera)
+        self.timer.timeout.connect(self.play_radar)
+        self.timer.timeout.connect(self.play_blind)
+        self.warning_timer.timeout.connect(self.update_warning_time)
+
+    def play_front_camera(self):
+        if not self.is_front:
+            return
+        img_width = 1200
+        img_height = 900
+        flag, frame = self.camera.read()
+        img = detect.video_object(frame)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.resize(img, (img_width, img_height))
+        img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
+        self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
+
+    def play_back_camera(self):
+        if self.is_front:
+            return
+        img_width = 900
+        img_height = 700
+        flag, frame = self.camera.read()
+        print("back")
+        img, is_danger = detect.brake_light(frame)
+        if is_danger:
+            print("danger")
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.resize(img, (img_width, img_height))
+        img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
+        self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
+
+    def play_blind(self):
+        if not self.is_blind_area:
+            return
+        img_width = 1200
+        img_height = 900
+        flag, frame = self.camera.read()
+        img = detect.blind_object(frame)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.resize(img, (img_width, img_height))
+        img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
+        self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
 
-def detect_sleep():
-    def video_loop():
-        try:
-            while True:
-                frame = detect.get_video()
-                res = is_sleep(frame)
-                res = cv2.cvtColor(res, cv2.COLOR_BGR2RGB)
-                picture1 = Image.fromarray(res)
-                picture1 = ImageTk.PhotoImage(picture1)
-                canvas2.create_image(0, 0, anchor='nw', image=picture1)
-                win.update_idletasks()
-                win.update()
-        except:
-            pass
+    def play_radar(self):
+        img_width = 900
+        img_height = 700
+        img = detect.get_radar()
+        # img = cv2.resize(img, (img_width, img_height))
+        img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
+        self.label_2.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
-    video_loop()
-    win.mainloop()
-    cv2.destroyAllWindows()
+    def slider_moved(self, value):
+        value = value / 20
+        detect.change_value(value)
+
+    def update_warning_time(self):
+        detect.update_warning_time()
+
+    def front_camera(self):
+        self.is_front = True
+        self.is_blind_area = False
+
+    def back_camera(self):
+        self.is_front = False
+        self.is_blind_area = False
+
+    def blind_camera(self):
+        self.is_blind_area = True
+        self.is_front = False
 
 
-win = tk.Tk()
-win.title("central console")
-ttk.Style().configure("TButton", padding=6, relief="flat",
-                      background="#ccc")
-
-win.geometry(str(window_width) + 'x' + str(window_height))
-# canvas.place(x=imagepos_x, y=imagepos_y)
-
-tab = ttk.Notebook(win)
-canvas = Canvas(tab, bg='white', width=image_width, height=image_height)
-tab1 = tab.add(canvas, text="车前摄像头")
-
-canvas2 = Canvas(tab, bg='blue', width=image_width, height=image_height)
-tab2 = tab.add(canvas2, text="后方摄像头 ")
-
-frame3 = tk.Frame(tab, bg="green")
-tab3 = tab.add(frame3, text="3")
-
-tab.pack(expand=True, fill=tk.BOTH)
-
-# 设置选中tab2
-tab.select(canvas)
 if __name__ == '__main__':
-    video()
-    # detect_sleep()
+    app = QApplication(sys.argv)
+    win = Console()
+    win.showFullScreen()
+    sys.exit(app.exec_())
