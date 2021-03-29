@@ -45,6 +45,7 @@ start = 0
 ALARM_ON = False
 
 
+# 将RGB转化成HSV，只保留红色的像素点
 def find_red(image):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     lower_red = np.array([0, 127, 128])
@@ -53,11 +54,13 @@ def find_red(image):
     return mask_red
 
 
+# 获取读到的视频帧
+# 好像不用了
 def get_video():
     frame = vs.read()
     return frame
 
-
+# 从参数frame中识别物体并返回加了框的图像
 # loop over the frames from the video stream
 def video_object(frame):
     global usr_input, end, ALARM_ON
@@ -109,7 +112,7 @@ def video_object(frame):
     frame = cv2.resize(frame, (540, 480))
     return frame
 
-
+# 检测红灯
 def brake_light(image):
     is_danger = False
     light_on = False
@@ -148,7 +151,7 @@ def brake_light(image):
         t = Thread(target=mylib.alert_sound)
         t.start()
         update_warning_time()
-        t.desdroy()
+        #t.desdroy()
     ALARM_ON = False
     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
                             cv2.CHAIN_APPROX_SIMPLE)
@@ -168,13 +171,14 @@ def brake_light(image):
     return image, is_danger
 
 
+# 更新报警时间，避免连续播放告警音频
 def update_warning_time():
     global start, end
     end += 0.1
     if end - start > 2:
         start = end
 
-
+# 盲区检测
 def blind_object(frame):
     global usr_input, end, ALARM_ON
     # grab the frame from the threaded video stream and resize it

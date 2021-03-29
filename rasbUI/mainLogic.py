@@ -19,10 +19,10 @@ import mylib
 class Console(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(Console, self).__init__()
-        self.is_blind_area = False
+        self.is_blind_area = False  # 判断主窗口是否放映盲区检测结果
         self.setupUi(self)
-        self.timer = QTimer(self)
-        self.warning_timer = QTimer(self)
+        self.timer = QTimer(self)  # 更新主窗口画面
+        self.warning_timer = QTimer(self)  # 这好像是用来播放声音的，避免连续播放音频文件
         self.warning_timer.start(100)
         self.timer.start(30)
         self.timer_2 = QTimer(self)
@@ -53,12 +53,15 @@ class Console(QMainWindow, Ui_MainWindow):
 
     def init_slot(self):
         # Default
-        self.timer.timeout.connect(self.play_front_camera)
+        self.timer.timeout.connect(self.play_front_camera)  # 每当timer计时结束就执行槽函数
         self.timer.timeout.connect(self.play_back_camera)
-        self.timer.timeout.connect(self.play_radar)
+        # self.timer.timeout.connect(self.play_radar)
         self.timer.timeout.connect(self.play_blind)
+        # 要增加新的业务代码：
+        # self.timer.timeout.connect(self.your_own_function)
         self.warning_timer.timeout.connect(self.update_warning_time)
 
+    # 调用功能函数，生成画面，并放映在画布上
     def play_front_camera(self):
         if not self.is_front:
             return
@@ -68,14 +71,15 @@ class Console(QMainWindow, Ui_MainWindow):
         img = detect.video_object(frame)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (img_width, img_height))
+        # 请不要动下面这两句神秘的代码
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
         self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
     def play_back_camera(self):
         if self.is_front:
             return
-        img_width = 900
-        img_height = 700
+        img_width =1200
+        img_height = 900
         flag, frame = self.camera.read()
         print("back")
         img, is_danger = detect.brake_light(frame)
@@ -86,6 +90,7 @@ class Console(QMainWindow, Ui_MainWindow):
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
         self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
+    # 播放盲区画面
     def play_blind(self):
         if not self.is_blind_area:
             return
@@ -98,7 +103,6 @@ class Console(QMainWindow, Ui_MainWindow):
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
         self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
-
     def play_radar(self):
         img_width = 900
         img_height = 700
@@ -107,6 +111,7 @@ class Console(QMainWindow, Ui_MainWindow):
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
         self.label_2.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
+    # slider的槽函数，用来改变距离敏感程度
     def slider_moved(self, value):
         value = value / 20
         detect.change_value(value)

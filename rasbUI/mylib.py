@@ -5,14 +5,14 @@ import ctypes
 import time
 import numpy as np
 
-
+# 给物体加框
 def track_object(frame, startX, startY, endX, endY, warning_line):
     if endY >= warning_line:
         cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 0, 255), 1)
     else:
         cv2.rectangle(frame, (startX, startY), (endX, endY), (255, 0, 0), 1)
 
-
+# 画倒车指引线
 def draw_guideline(frame, window_height, alterYRed):
     # (40,40) is the recomended value
     alterYRed = int(5 + alterYRed)
@@ -95,7 +95,7 @@ def draw_line(frame, window_height, alterYRed):
              3)  # 黄线
     cv2.line(frame, (250, window_height - 130), (230, window_height - 130), (0, 255, 0), 3)  # 绿线
 
-
+# 绘制侧边摄像头识别敏感区域
 def draw_box(frame, window_height, alterYRed):
     # (40,40) is the recomended value
     alterYRed = int(5 + alterYRed)
