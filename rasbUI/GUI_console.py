@@ -270,6 +270,52 @@ class Ui_MainWindow(object):
         self.label_6 = QtWidgets.QLabel(self.centralwidget)
         self.label_6.setGeometry(QtCore.QRect(790, 1040, 21, 16))
         self.label_6.setObjectName("label_6")
+        self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_5.setGeometry(QtCore.QRect(1450, 610, 211, 91))
+        self.pushButton_5.setStyleSheet("\n"
+"QPushButton{\n"
+"    border-style: outset;\n"
+"    border-width: 2px;\n"
+"    border-top-color: qlineargradient(spread:pad, x1:0.5, y1:0.6, x2:0.5, y2:0.4, stop:0 rgba(115, 115, 115, 255), stop:1 rgba(62, 62, 62, 255));\n"
+"    border-right-color: qlineargradient(spread:pad, x1:0.4, y1:0.5, x2:0.6, y2:0.5, stop:0 rgba(115, 115, 115, 255), stop:1 rgba(62, 62, 62, 255));\n"
+"    border-left-color: qlineargradient(spread:pad, x1:0.6, y1:0.5, x2:0.4, y2:0.5, stop:0 rgba(115, 115, 115, 255), stop:1 rgba(62, 62, 62, 255));\n"
+"    border-bottom-color: rgb(58, 58, 58);\n"
+"    border-bottom-width: 1px;\n"
+"    border-style: solid;\n"
+"    color: rgb(255, 255, 255);\n"
+"    padding: 6px;\n"
+"    background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(77, 77, 77, 255), stop:1 rgba(97, 97, 97, 255));\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    border-style: outset;\n"
+"    border-width: 2px;\n"
+"    border-top-color: qlineargradient(spread:pad, x1:0.5, y1:0.6, x2:0.5, y2:0.4, stop:0 rgba(180, 180, 180, 255), stop:1 rgba(110, 110, 110, 255));\n"
+"    border-right-color: qlineargradient(spread:pad, x1:0.4, y1:0.5, x2:0.6, y2:0.5, stop:0 rgba(180, 180, 180, 255), stop:1 rgba(110, 110, 110, 255));\n"
+"    border-left-color: qlineargradient(spread:pad, x1:0.6, y1:0.5, x2:0.4, y2:0.5, stop:0 rgba(180, 180, 180, 255), stop:1 rgba(110, 110, 110, 255));\n"
+"    border-bottom-color: rgb(115, 115, 115);\n"
+"    border-bottom-width: 1px;\n"
+"    border-style: solid;\n"
+"    color: rgb(255, 255, 255);\n"
+"    padding: 6px;\n"
+"    background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(107, 107, 107, 255), stop:1 rgba(157, 157, 157, 255));\n"
+"}\n"
+"\n"
+"QPushButton:pressed{\n"
+"    border-style: outset;\n"
+"    border-width: 2px;\n"
+"    border-top-color: qlineargradient(spread:pad, x1:0.5, y1:0.6, x2:0.5, y2:0.4, stop:0 rgba(62, 62, 62, 255), stop:1 rgba(22, 22, 22, 255));\n"
+"    border-right-color: qlineargradient(spread:pad, x1:0.4, y1:0.5, x2:0.6, y2:0.5, stop:0 rgba(115, 115, 115, 255), stop:1 rgba(62, 62, 62, 255));\n"
+"    border-left-color: qlineargradient(spread:pad, x1:0.6, y1:0.5, x2:0.4, y2:0.5, stop:0 rgba(115, 115, 115, 255), stop:1 rgba(62, 62, 62, 255));\n"
+"    border-bottom-color: rgb(58, 58, 58);\n"
+"    border-bottom-width: 1px;\n"
+"    border-style: solid;\n"
+"    color: rgb(255, 255, 255);\n"
+"    padding: 6px;\n"
+"    background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(77, 77, 77, 255), stop:1 rgba(97, 97, 97, 255));\n"
+"}\n"
+"")
+        self.pushButton_5.setObjectName("pushButton_5")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1881, 26))
@@ -284,6 +330,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.clicked.connect(MainWindow.front_camera)
         self.horizontalSlider.sliderMoved['int'].connect(MainWindow.slider_moved)
         self.pushButton_4.clicked.connect(MainWindow.blind_camera)
+        self.pushButton_5.clicked.connect(MainWindow.detect_is_sleep)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -297,3 +344,4 @@ class Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "盲区摄像头"))
         self.label_4.setText(_translate("MainWindow", "0"))
         self.label_6.setText(_translate("MainWindow", "40"))
+        self.pushButton_5.setText(_translate("MainWindow", "开启疲劳检测"))

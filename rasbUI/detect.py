@@ -16,6 +16,7 @@ import mylib
 import dlib
 from imutils import face_utils
 from threading import Thread
+import winsound
 
 # set constant
 size = 400
@@ -112,6 +113,7 @@ def video_object(frame):
     frame = cv2.resize(frame, (540, 480))
     return frame
 
+
 # 检测红灯
 def brake_light(image):
     is_danger = False
@@ -178,6 +180,7 @@ def update_warning_time():
     if end - start > 2:
         start = end
 
+
 # 盲区检测
 def blind_object(frame):
     global usr_input, end, ALARM_ON
@@ -232,3 +235,4 @@ def blind_object(frame):
 
 def get_radar():
     return mylib.radar_fun()
+

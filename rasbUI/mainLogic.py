@@ -14,12 +14,16 @@ import detect
 import time
 from threading import Thread
 import mylib
+from is_sleep import is_sleep
 
 
 class Console(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(Console, self).__init__()
+        self.is_front = True
         self.is_blind_area = False  # 判断主窗口是否放映盲区检测结果
+        self.is_drowsiness = False  # 睡意检测判断标志
+        self.is_back = False
         self.setupUi(self)
         self.timer = QTimer(self)  # 更新主窗口画面
         self.warning_timer = QTimer(self)  # 这好像是用来播放声音的，避免连续播放音频文件
@@ -28,7 +32,6 @@ class Console(QMainWindow, Ui_MainWindow):
         self.timer_2 = QTimer(self)
         self.camera = cv2.VideoCapture(0)
         self.init_slot()
-        self.is_front = True
         self.setWindowFlags(Qt.FramelessWindowHint)
 
         self.effect_shadow = QGraphicsDropShadowEffect(self)
@@ -59,6 +62,7 @@ class Console(QMainWindow, Ui_MainWindow):
         self.timer.timeout.connect(self.play_blind)
         # 要增加新的业务代码：
         # self.timer.timeout.connect(self.your_own_function)
+        self.timer.timeout.connect(self.play_detect_drowsiness)   # 睡意检测
         self.warning_timer.timeout.connect(self.update_warning_time)
 
     # 调用功能函数，生成画面，并放映在画布上
@@ -78,7 +82,7 @@ class Console(QMainWindow, Ui_MainWindow):
     def play_back_camera(self):
         if self.is_front:
             return
-        img_width =1200
+        img_width = 1200
         img_height = 900
         flag, frame = self.camera.read()
         print("back")
@@ -103,6 +107,21 @@ class Console(QMainWindow, Ui_MainWindow):
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
         self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
+    def play_detect_drowsiness(self):
+        if not self.is_drowsiness:
+            return
+        img_width = 1200
+        img_height = 900
+        flag, frame = self.camera.read()
+        img = is_sleep(frame)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+       # cv2.imshow("img",img)
+        # cv2.waitkey(0)
+        img = cv2.resize(img, (img_width, img_height))
+        img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
+        self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
+
+
     def play_radar(self):
         img_width = 900
         img_height = 700
@@ -116,20 +135,34 @@ class Console(QMainWindow, Ui_MainWindow):
         value = value / 20
         detect.change_value(value)
 
+
     def update_warning_time(self):
         detect.update_warning_time()
+
 
     def front_camera(self):
         self.is_front = True
         self.is_blind_area = False
+        self.is_back = False
+        self.is_drowsiness = False
 
     def back_camera(self):
+        self.is_back = True
         self.is_front = False
         self.is_blind_area = False
+        self.is_drowsiness = False
 
     def blind_camera(self):
         self.is_blind_area = True
         self.is_front = False
+        self.is_back = False
+        self.is_drowsiness = False
+
+    def detect_is_sleep(self):
+        self.is_front = False
+        self.is_blind_area = False
+        self.is_front = False
+        self.is_drowsiness = True
 
 
 if __name__ == '__main__':
