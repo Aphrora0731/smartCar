@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'redesigned.ui'
+# Form implementation generated from reading ui file 'final_edition.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -183,7 +183,7 @@ class Ui_MainWindow(object):
         self.label_3.setStyleSheet("QLabel{background-color:#3366ff}")
         self.label_3.setObjectName("label_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_4.setGeometry(QtCore.QRect(1190, 850, 211, 91))
+        self.pushButton_4.setGeometry(QtCore.QRect(1450, 610, 211, 91))
         self.pushButton_4.setStyleSheet("\n"
 "QPushButton{\n"
 "    border-style: outset;\n"
@@ -271,7 +271,7 @@ class Ui_MainWindow(object):
         self.label_6.setGeometry(QtCore.QRect(790, 1040, 21, 16))
         self.label_6.setObjectName("label_6")
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_5.setGeometry(QtCore.QRect(1450, 610, 211, 91))
+        self.pushButton_5.setGeometry(QtCore.QRect(1450, 730, 211, 91))
         self.pushButton_5.setStyleSheet("\n"
 "QPushButton{\n"
 "    border-style: outset;\n"
@@ -344,4 +344,4 @@ class Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "盲区摄像头"))
         self.label_4.setText(_translate("MainWindow", "0"))
         self.label_6.setText(_translate("MainWindow", "40"))
-        self.pushButton_5.setText(_translate("MainWindow", "开启疲劳检测"))
+        self.pushButton_5.setText(_translate("MainWindow", "疲劳检测"))

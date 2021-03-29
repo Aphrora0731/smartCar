@@ -10,11 +10,11 @@ from PyQt5 import QtGui
 from PyQt5.Qt import QPropertyAnimation, QPoint
 import PyQt5.QtWidgets
 import cv2
-import detect
 import time
 from threading import Thread
 import mylib
 from is_sleep import is_sleep
+import detect
 
 
 class Console(QMainWindow, Ui_MainWindow):
@@ -53,6 +53,8 @@ class Console(QMainWindow, Ui_MainWindow):
         op.setOpacity(0.8)
         self.pushButton_2.setFont(self.font)
         self.pushButton_3.setFont(self.font)
+        self.pushButton_4.setFont(self.font)
+        self.pushButton_5.setFont(self.font)
 
     def init_slot(self):
         # Default
@@ -72,7 +74,10 @@ class Console(QMainWindow, Ui_MainWindow):
         img_width = 1200
         img_height = 900
         flag, frame = self.camera.read()
-        img = detect.video_object(frame)
+        img, is_danger = detect.brake_light(frame)  # 红灯检测
+        if is_danger:
+            print("danger")
+        img = detect.video_object_no_line(frame)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (img_width, img_height))
         # 请不要动下面这两句神秘的代码
@@ -80,15 +85,13 @@ class Console(QMainWindow, Ui_MainWindow):
         self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
     def play_back_camera(self):
-        if self.is_front:
+        if not self.is_back:
             return
         img_width = 1200
         img_height = 900
         flag, frame = self.camera.read()
-        print("back")
-        img, is_danger = detect.brake_light(frame)
-        if is_danger:
-            print("danger")
+        img = detect.video_object(frame)
+        # cv2.imshow("image",img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (img_width, img_height))
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
