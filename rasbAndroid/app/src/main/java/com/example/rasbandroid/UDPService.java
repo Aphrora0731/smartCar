@@ -13,6 +13,12 @@ import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketTimeoutException;
+import java.net.InetAddress;
+import java.net.Inet4Address;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+
+
 
 public class UDPService extends Service {
 
@@ -45,6 +51,26 @@ public class UDPService extends Service {
         }
         return true;
     }
+    private String getIP(){
+
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
+                {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address))
+                    {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
     /**
      * Start the frame receive thread
      */
@@ -59,6 +85,8 @@ public class UDPService extends Service {
                     byte[] data=new byte[65536];
                     DatagramPacket packet=new DatagramPacket(data,data.length);
                     Log.d("inRecv","initsucess");
+
+                    System.out.println("Local HostAddress: "+getIP());
                     while(socket!=null){
                         try{
 //                            Log.d("inRecvLoop","beforerecv");

@@ -19,12 +19,22 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Button;
 import android.view.*;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketTimeoutException;
+import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -66,6 +76,52 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+        socketInit();
+
+    }
+
+    private void socketInit(){
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    DatagramSocket socket = new DatagramSocket();
+                    socket.setBroadcast(true);
+                    socket.setSoTimeout(10);
+                    byte[] b ="udp server".getBytes(StandardCharsets.UTF_8);
+                    DatagramPacket dpSend = new DatagramPacket(b, b.length,
+                            InetAddress.getByName("192.168.43.255"),8080);
+                    for(int i=0;i<=133333;i++){
+                        socket.send(dpSend);
+//                        Log.d("inSendLoop","in");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    private static String getIP(){
+
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
+                {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address))
+                    {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Override

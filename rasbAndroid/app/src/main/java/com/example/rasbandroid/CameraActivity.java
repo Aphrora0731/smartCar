@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 
+
 public class CameraActivity extends AppCompatActivity {
 
     private ImageView frameView;
