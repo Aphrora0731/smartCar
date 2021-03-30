@@ -15,7 +15,7 @@ from threading import Thread
 import mylib
 from is_sleep import is_sleep
 import detect
-from UDPService import UDPService
+from socketService import SocketService
 
 
 class Console(QMainWindow, Ui_MainWindow):
@@ -33,7 +33,7 @@ class Console(QMainWindow, Ui_MainWindow):
         self.timer_2 = QTimer(self)
         self.camera = cv2.VideoCapture(0)
         self.init_slot()
-        self.udps=UDPService('10.148.20.131')
+        self.socketS=SocketService()
         self.setWindowFlags(Qt.FramelessWindowHint)
 
         self.effect_shadow = QGraphicsDropShadowEffect(self)
@@ -80,7 +80,7 @@ class Console(QMainWindow, Ui_MainWindow):
         if is_danger:
             print("danger")
         img = detect.video_object_no_line(frame)
-        self.udps.sendFrame(img)
+        self.socketS.sendFrameByUDP(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (img_width, img_height))
         # 请不要动下面这两句神秘的代码
@@ -94,7 +94,7 @@ class Console(QMainWindow, Ui_MainWindow):
         img_height = 900
         flag, frame = self.camera.read()
         img = detect.video_object(frame)
-        self.udps.sendFrame(img)
+        self.socketS.sendFrameByUDP(img)
         # cv2.imshow("image",img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (img_width, img_height))
@@ -109,7 +109,7 @@ class Console(QMainWindow, Ui_MainWindow):
         img_height = 900
         flag, frame = self.camera.read()
         img = detect.blind_object(frame)
-        self.udps.sendFrame(img)
+        self.socketS.sendFrameByUDP(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (img_width, img_height))
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
@@ -122,7 +122,7 @@ class Console(QMainWindow, Ui_MainWindow):
         img_height = 900
         flag, frame = self.camera.read()
         img = is_sleep(frame)
-        self.udps.sendFrame(img)
+        self.socketS.sendFrameByUDP(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
        # cv2.imshow("img",img)
         # cv2.waitkey(0)
