@@ -316,6 +316,14 @@ class Ui_MainWindow(object):
 "}\n"
 "")
         self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(50, 10, 101, 51))
+        self.pushButton.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("Exit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton.setIcon(icon)
+        self.pushButton.setIconSize(QtCore.QSize(70, 70))
+        self.pushButton.setObjectName("pushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1881, 26))
@@ -331,6 +339,7 @@ class Ui_MainWindow(object):
         self.horizontalSlider.sliderMoved['int'].connect(MainWindow.slider_moved)
         self.pushButton_4.clicked.connect(MainWindow.blind_camera)
         self.pushButton_5.clicked.connect(MainWindow.detect_is_sleep)
+        self.pushButton.clicked.connect(MainWindow.exit_button)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

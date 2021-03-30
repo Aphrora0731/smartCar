@@ -64,6 +64,7 @@ def sound_alarm():
 
 def alert_soundtest(endY):
     duration = 500
+
     freq = endY * 4
     winsound.Beep(freq, duration)
 

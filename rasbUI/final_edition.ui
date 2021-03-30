@@ -458,6 +458,29 @@ QPushButton:pressed{
      <string>疲劳检测</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>10</y>
+      <width>101</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>Exit.png</normaloff>Exit.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>70</width>
+      <height>70</height>
+     </size>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -553,6 +576,22 @@ QPushButton:pressed{
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>exit_button()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>115</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>11</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>front_camera()</slot>
@@ -560,5 +599,6 @@ QPushButton:pressed{
   <slot>slider_moved()</slot>
   <slot>blind_camera()</slot>
   <slot>detect_is_sleep()</slot>
+  <slot>exit_button()</slot>
  </slots>
 </ui>

@@ -20,17 +20,22 @@ import detect
 class Console(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(Console, self).__init__()
-        self.is_front = True
+        self.is_front = True   # 开启时默认开启前方摄像头
         self.is_blind_area = False  # 判断主窗口是否放映盲区检测结果
         self.is_drowsiness = False  # 睡意检测判断标志
-        self.is_back = False
+        self.is_back = False    # 后方摄像头
         self.setupUi(self)
         self.timer = QTimer(self)  # 更新主窗口画面
         self.warning_timer = QTimer(self)  # 这好像是用来播放声音的，避免连续播放音频文件
+        # self.warning_timer.start(100)
         self.warning_timer.start(100)
         self.timer.start(30)
         self.timer_2 = QTimer(self)
-        self.camera = cv2.VideoCapture(0)
+        self.camera_front = cv2.VideoCapture(0)
+        self.camera_back = cv2.VideoCapture(0)
+        self.camera_blind = cv2.VideoCapture(0)
+        self.camera_drowsiness = cv2.VideoCapture(0)
+
         self.init_slot()
         self.setWindowFlags(Qt.FramelessWindowHint)
 
@@ -68,12 +73,13 @@ class Console(QMainWindow, Ui_MainWindow):
         self.warning_timer.timeout.connect(self.update_warning_time)
 
     # 调用功能函数，生成画面，并放映在画布上
+    # 调用前方摄像头
     def play_front_camera(self):
         if not self.is_front:
             return
         img_width = 1200
         img_height = 900
-        flag, frame = self.camera.read()
+        flag, frame = self.camera_front.read()
         img, is_danger = detect.brake_light(frame)  # 红灯检测
         if is_danger:
             print("danger")
@@ -89,7 +95,7 @@ class Console(QMainWindow, Ui_MainWindow):
             return
         img_width = 1200
         img_height = 900
-        flag, frame = self.camera.read()
+        flag, frame = self.camera_back.read()
         img = detect.video_object(frame)
         # cv2.imshow("image",img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -103,7 +109,7 @@ class Console(QMainWindow, Ui_MainWindow):
             return
         img_width = 1200
         img_height = 900
-        flag, frame = self.camera.read()
+        flag, frame = self.camera_blind.read()
         img = detect.blind_object(frame)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (img_width, img_height))
@@ -115,10 +121,10 @@ class Console(QMainWindow, Ui_MainWindow):
             return
         img_width = 1200
         img_height = 900
-        flag, frame = self.camera.read()
+        flag, frame = self.camera_drowsiness.read()
         img = is_sleep(frame)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-       # cv2.imshow("img",img)
+        # cv2.imshow("img",img)
         # cv2.waitkey(0)
         img = cv2.resize(img, (img_width, img_height))
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
@@ -138,10 +144,8 @@ class Console(QMainWindow, Ui_MainWindow):
         value = value / 20
         detect.change_value(value)
 
-
     def update_warning_time(self):
         detect.update_warning_time()
-
 
     def front_camera(self):
         self.is_front = True
@@ -166,6 +170,9 @@ class Console(QMainWindow, Ui_MainWindow):
         self.is_blind_area = False
         self.is_front = False
         self.is_drowsiness = True
+
+    def exit_button(self):
+        sys.exit()
 
 
 if __name__ == '__main__':

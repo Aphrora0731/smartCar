@@ -47,7 +47,7 @@ def eye_aspect_ratio(eye):
 #   眼球必须低于阈值才能引起眼睛不适
 # 警报
 # EYE_AR_THRESH = 0.3 最初的参数
-EYE_AR_THRESH = 0.3  # 眼睛的宽和长之比
+EYE_AR_THRESH = 0.25  # 眼睛的宽和长之比
 EYE_AR_CONSEC_FRAMES = 48  # 眼睛连续闭上的帧数，如果超过48帧就发出警报
 
 # initialize the frame counter as well as a boolean used to

@@ -90,14 +90,14 @@ def video_object(frame):
             idx = int(detections[0, 0, i, 1])
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
-
-            if end - start > 0.6:
+            if end - start > 1:
                 # 用object下沿距离画框底部的垂直距离判定车与物体的水平距离
                 if endY >= window_height - 5 - usr_input:
                     if not ALARM_ON:
                         ALARM_ON = True
                         t = Thread(target=mylib.alert_soundtest, args=[endY])
                         t.start()
+                    end = start
                     update_warning_time()
             ALARM_ON = False
             # draw the prediction on the frame
@@ -134,17 +134,6 @@ def video_object_no_line(frame):   # 前方摄像头调用
             idx = int(detections[0, 0, i, 1])
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
-            '''
-            if end - start > 0.6:
-                # 用object下沿距离画框底部的垂直距离判定车与物体的水平距离
-                if endY >= window_height - 5 - usr_input:
-                    if not ALARM_ON:
-                        ALARM_ON = True
-                        t = Thread(target=mylib.alert_soundtest, args=[endY])
-                        t.start()
-                    update_warning_time()
-            ALARM_ON = False
-            '''
             # draw the prediction on the frame
             label = "{}: {:.2f}%".format(CLASSES[idx], confidence * 100)
             mylib.track_object(frame, startX, startY, endX, endY, window_height - 5 - usr_input)
