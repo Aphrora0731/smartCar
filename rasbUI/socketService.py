@@ -59,7 +59,7 @@ class SocketService():
 
     def sendFrameByUDP(self,frame):#发送帧函数，请在中控循环获取每一帧的摄像头数据并解析和显示画面的函数中循环调用，传入cap.read()函数获取的frame
         if self.host=='':
-            print('客户端未连接！')
+            # print('客户端未连接！')
             return
         def runSend():
             try:
