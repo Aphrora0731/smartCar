@@ -271,6 +271,6 @@ def blind_object(frame):
     return frame
 
 
-def get_radar():
-    return mylib.radar_fun()
+# def get_radar():
+ #   return mylib.radar_fun()
 

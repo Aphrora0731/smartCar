@@ -3,34 +3,41 @@ import socket
 import time
 import struct
 import threading
+import numpy as np
 
 class SocketService():
     def __init__(self):
-        self.udpServer=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)#构造套接字，设置为UDP模式
-        self.udpServer.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1) #设置为广播模式
-        self.udpServer.bind(('',8080))
-        self.udpServer.settimeout(10)
+        self.udpClient=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)#构造套接字，设置为UDP模式
+        self.udpClient.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1) #设置为广播模式
+        self.udpClient.bind(('',8080))
+        self.udpClient.settimeout(0.01)
         self.host=''
+
+        self.udpServer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.udpServer.bind(('',8088))
+        self.udpServer.settimeout(0)
+
         self.tcpServer=None
         self.tcpClient=None
         self.tcpClientAddr=None
+
         def listen():
             while True:
                 try:
-                    msgData,addr=self.udpServer.recvfrom(1024)
+                    msgData,addr=self.udpClient.recvfrom(1024)
                     message=msgData.decode('utf-8')
                     print(message,message == 'udp server')
                     if message == 'udp server':
                         self.host=addr[0]
                         print(self.host)
-                        self.udpServer.close()
-                        self.udpServer=None
+                        self.udpClient.close()
+                        self.udpClient=None
                         # self.startTCP()
                         self.startUDP()
                         break
                     self.host=''
                 except Exception as e:
-                    print(e)
+                    # print(e)
                     continue
 
         # listen()
@@ -54,30 +61,30 @@ class SocketService():
         t.start()
 
     def startUDP(self):
-        self.udpServer=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)#构造套接字，设置为UDP模式
-        self.udpServer.connect((self.host,8080))#连接到指定客户端的IP地址和端口
+        self.udpClient=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)#构造套接字，设置为UDP模式
+        self.udpClient.connect((self.host,8080))#连接到指定客户端的IP地址和端口
 
     def sendFrameByUDP(self,frame):#发送帧函数，请在中控循环获取每一帧的摄像头数据并解析和显示画面的函数中循环调用，传入cap.read()函数获取的frame
         if self.host=='':
-            print('客户端未连接！')
+            # print('客户端未连接！')
             return
         def runSend():
             try:
                 result,imgData=cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,50])#编码为JPEG格式的二进制字符串
-                self.udpServer.sendall(imgData)#发送二进制串
+                self.udpClient.sendall(imgData)#发送二进制串
             except Exception as e:
-                self.udpServer.sendall(struct.pack('b',1))
-                print(e)
+                self.udpClient.sendall(struct.pack('b',1))
+                # print(e)
 
         t=threading.Thread(target=runSend,daemon=True)
         t.start()
 
     def sendCmdByTCP(self,command):#发送帧函数，请在中控循环获取每一帧的摄像头数据并解析和显示画面的函数中循环调用，传入cap.read()函数获取的frame
         if self.host=='':
-            print('客户端未连接！')
+            # print('客户端未连接！')
             return
         if not self.isTCPLinked:
-            print('TCP未连接！')
+            # print('TCP未连接！')
             return
         def runSend():
             try:
@@ -90,13 +97,24 @@ class SocketService():
         t=threading.Thread(target=runSend,daemon=True)
         t.start()
 
+    def getRadarFrameByUDP(self):#获取雷达帧函数
+        try:
+            imgData=self.udpServer.recv(65535)
+            image = np.asarray(bytearray(imgData), dtype="uint8") 
+            img=cv2.imdecode(image,cv2.IMREAD_COLOR)
+            return img
+        except Exception as e:
+            pass
+            # print(e)
+
+
     def __del__(self):
         if self.tcpClient is not None:
             self.tcpClient.close()#析构时关闭网络连接
         if self.tcpServer is not None:
             self.tcpServer.close()#关闭套接字
-        if self.udpServer is not None:
-            self.udpServer.close()#关闭套接字 
+        if self.udpClient is not None:
+            self.udpClient.close()#关闭套接字 
 
 
 if __name__ =="__main__":

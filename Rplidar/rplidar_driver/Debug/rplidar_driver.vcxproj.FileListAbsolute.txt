@@ -1,0 +1,2 @@
+D:\C++ exercise\Rplidar\Debug\rplidar_driver.pdb
+D:\C++ exercise\Rplidar\rplidar_driver\Debug\rplidar_driver.pdb

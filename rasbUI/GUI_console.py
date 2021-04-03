@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'final_edition.ui'
+# Form implementation generated from reading ui file 'last_edition.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -16,7 +16,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1881, 1150)
         MainWindow.setStyleSheet("QMainWindow {\n"
-"background-color:white\n"
+"background-image:url(./background.jpg)\n"
 "}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet("\n"
@@ -178,10 +178,6 @@ class Ui_MainWindow(object):
         self.label_2.setGeometry(QtCore.QRect(1190, 90, 541, 471))
         self.label_2.setStyleSheet("QLabel{background-color:red}")
         self.label_2.setObjectName("label_2")
-        self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(-110, 0, 2251, 71))
-        self.label_3.setStyleSheet("QLabel{background-color:#3366ff}")
-        self.label_3.setObjectName("label_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_4.setGeometry(QtCore.QRect(1450, 610, 211, 91))
         self.pushButton_4.setStyleSheet("\n"
@@ -349,7 +345,6 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "车后摄像头"))
         self.pushButton_3.setText(_translate("MainWindow", "车前摄像头"))
         self.label_2.setText(_translate("MainWindow", "雷达画布"))
-        self.label_3.setText(_translate("MainWindow", "TextLabel"))
         self.pushButton_4.setText(_translate("MainWindow", "盲区摄像头"))
         self.label_4.setText(_translate("MainWindow", "0"))
         self.label_6.setText(_translate("MainWindow", "40"))
