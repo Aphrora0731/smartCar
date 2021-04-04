@@ -151,12 +151,10 @@ class Console(QMainWindow, Ui_MainWindow):
         img_height = 700
         #img = detect.get_radar()
         # img = cv2.resize(img, (img_width, img_height))
-        start=time.time()
-        img,judgeMsg = self.socketS.getRadarFrameByUDP()
+        img,msg = self.socketS.getRadarFrameByUDP()
         try:
             img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
             self.label_2.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
-            print(time.time()-start)
         except:
             pass
 

@@ -26,7 +26,7 @@ class SocketService():
                 try:
                     msgData,addr=self.udpClient.recvfrom(1024)
                     message=msgData.decode('utf-8')
-                    print(message,message == 'udp server')
+                    # print(message,message == 'udp server')
                     if message == 'udp server':
                         self.host=addr[0]
                         print(self.host)
@@ -40,7 +40,6 @@ class SocketService():
                     # print(e)
                     continue
 
-        # listen()
         t=threading.Thread(target=listen,daemon=True)
         t.start()
 
@@ -99,7 +98,9 @@ class SocketService():
 
     def getRadarFrameByUDP(self):#获取雷达帧函数
         try:
+            # print('asdasa')
             data=self.udpServer.recv(65535)
+            # print(data,'uuu')
             imgData=data[:-1]
             judgeData=data[-1:]
             judgeMsg=judgeData.decode('utf-8')
@@ -107,7 +108,7 @@ class SocketService():
             img=cv2.imdecode(image,cv2.IMREAD_COLOR)
             return img,judgeMsg
         except Exception as e:
-            pass
+            return (None,None)
             # print(e)
 
 

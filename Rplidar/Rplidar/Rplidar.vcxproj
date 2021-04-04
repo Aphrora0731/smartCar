@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>D:\OpenCV\opencv\build\x86\vc14\lib;D:\C++ exercise\Rplidar\Debug;$(LibraryPath)</LibraryPath>
-    <IncludePath>D:\OpenCV\opencv\build\include;D:\C++ exercise\Rplidar\Rplidar\sdk\src;D:\OpenCV\opencv\build\include\opencv2;D:\C++ exercise\Rplidar\Rplidar\sdk\src\arch\win32;D:\C++ exercise\Rplidar\Rplidar\sdk\src\hal;D:\C++ exercise\Rplidar\Rplidar\sdk\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\OpenCV\opencv\build\x86\vc14\lib;D:\Work Space\competition\smartCar\Rplidar\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\OpenCV\opencv\build\include;D:\Work Space\competition\smartCar\Rplidar\rplidar_driver\sdk\include;D:\OpenCV\opencv\build\include\opencv2;D:\Work Space\competition\smartCar\Rplidar\rplidar_driver\sdk\src\hal;D:\Work Space\competition\smartCar\Rplidar\rplidar_driver\sdk\src\arch\win32;D:\Work Space\competition\smartCar\Rplidar\rplidar_driver\sdk\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -149,6 +149,9 @@
     <ClCompile Include="opencv_lidar.cpp" />
     <ClCompile Include="Rplidar_1.cpp" />
     <ClCompile Include="socket.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\radar.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

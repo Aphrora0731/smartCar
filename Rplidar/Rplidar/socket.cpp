@@ -46,12 +46,19 @@ int main()
 
 	int len = sizeof(SOCKADDR);
 
+	// start typical scan
+	RplidarScanMode scanMode;
+	drv->startScan(false, true, 0, &scanMode);
+
 	while (1) {
 		cv::Mat image = Rplidar_getImage(lidarImage, drv);
 		vector<uchar>data_encode;
 		imencode(".jpg", image, data_encode);
 		string str_encode(data_encode.begin(), data_encode.end());
 
+		//
+		char pre_detection = preDetection(lidarImage);
+		str_encode += pre_detection;
 
 		const char* sendBuf = str_encode.c_str();
 		int toSendNum = str_encode.size();

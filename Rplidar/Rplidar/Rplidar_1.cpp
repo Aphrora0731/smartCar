@@ -45,7 +45,7 @@ bool Rplidar_connect(RPlidarDriver* drv)
         RPlidarDriver::DisposeDriver(drv);
         return false;
     }
-    cout << "debug" << endl;
+    //cout << "debug" << endl;
     drv->startMotor();
 
     // check health
@@ -62,11 +62,7 @@ cv::Mat Rplidar_getImage(LidarImage &lidarImage, RPlidarDriver* drv) {
     u_result     op_result;
 
     //creat opencv image
-    cv::Mat RadarImage(RadarImageWdith, RadarImageHeight, CV_8UC3);
-
-    // start typical scan
-    RplidarScanMode scanMode;
-    drv->startScan(false,true,0,&scanMode);
+    cv::Mat RadarImage (RadarImageWdith, RadarImageHeight,CV_8UC3);
 
 
     rplidar_response_measurement_node_hq_t nodes[720];
@@ -74,14 +70,22 @@ cv::Mat Rplidar_getImage(LidarImage &lidarImage, RPlidarDriver* drv) {
     op_result = drv->grabScanDataHq(nodes, count);
     drv->ascendScanData(nodes, count);
 
-    if (IS_OK(op_result)) {
-        //变为纯黑背景
+    if (IS_OK(op_result)) {;
+        
         RadarImage.setTo(0);
-        //中间画一个点
-        circle(RadarImage, cv::Point(halfWidth, halfHeight), 7, cv::Scalar(255, 255, 255), -1, CV_AA);
-
         lidarImage.DataConversion(nodes, count);
         lidarImage.Draw(RadarImage);
         return RadarImage;
     }
 } 
+char preDetection(LidarImage& lidarImage)
+{
+    int datasize = lidarImage.scan_data.size();
+    for (int i = 0; i < datasize; i++)
+    {
+        if (lidarImage.scan_data[i].angle < 30 || lidarImage.scan_data[i].angle >330)
+            if (lidarImage.scan_data[i].dist < 3000)
+                return 'y';
+    }
+    return 'n';
+}

@@ -18,3 +18,4 @@ using namespace rp::standalone::rplidar;
 bool checkRPLIDARHealth(RPlidarDriver* drv);
 bool Rplidar_connect(RPlidarDriver* drv);
 cv::Mat Rplidar_getImage(LidarImage& lidarImage, RPlidarDriver* drv);
+char preDetection(LidarImage& lidarImage);
