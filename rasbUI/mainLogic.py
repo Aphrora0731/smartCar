@@ -33,14 +33,14 @@ class Console(QMainWindow, Ui_MainWindow):
         self.timer.start(30)
         self.timer_2 = QTimer(self)
 
-        '''
-        self.camera_front = cv2.VideoCapture(0)
-        self.camera_back = cv2.VideoCapture(0)
-        self.camera_blind = cv2.VideoCapture(0)
+        
+        self.camera_front = cv2.VideoCapture(1)
+        # self.camera_back = cv2.VideoCapture(2)
+        self.camera_blind = cv2.VideoCapture(2)
         self.camera_drowsiness = cv2.VideoCapture(0)
         '''
         self.test_camera = cv2.VideoCapture(0)
-
+        '''
         self.init_slot()
         self.socketS=SocketService()
         self.setWindowFlags(Qt.FramelessWindowHint)
@@ -85,8 +85,8 @@ class Console(QMainWindow, Ui_MainWindow):
             return
         img_width = 1200
         img_height = 900
-        # flag, frame = self.camera_front.read()        
-        flag, frame = self.test_camera.read()
+        flag, frame = self.camera_front.read()        
+        # flag, frame = self.test_camera.read()
 
         img, is_danger = detect.brake_light(frame)  # 红灯检测
         if is_danger:
@@ -104,8 +104,8 @@ class Console(QMainWindow, Ui_MainWindow):
             return
         img_width = 1200
         img_height = 900
-        # flag, frame = self.camera_back.read()
-        flag, frame = self.test_camera.read()
+        flag, frame = self.camera_back.read()
+        # flag, frame = self.test_camera.read()
         img = detect.video_object(frame)
         self.socketS.sendFrameByUDP(img)
         # cv2.imshow("image",img)
@@ -120,8 +120,8 @@ class Console(QMainWindow, Ui_MainWindow):
             return
         img_width = 1200
         img_height = 900
-        # flag, frame = self.camera_blind.read()
-        flag, frame = self.test_camera.read()
+        flag, frame = self.camera_blind.read()
+        # flag, frame = self.test_camera.read()
         img = detect.blind_object(frame)
         self.socketS.sendFrameByUDP(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -134,8 +134,9 @@ class Console(QMainWindow, Ui_MainWindow):
             return
         img_width = 1200
         img_height = 900
-        # flag, frame = self.camera_drowsiness.read()
-        flag, frame = self.test_camera.read()
+        
+        flag, frame = self.camera_drowsiness.read()
+        # flag, frame = self.test_camera.read()
 
         img = is_sleep(frame)
         self.socketS.sendFrameByUDP(img)
@@ -151,7 +152,7 @@ class Console(QMainWindow, Ui_MainWindow):
         #img = detect.get_radar()
         # img = cv2.resize(img, (img_width, img_height))
         start=time.time()
-        img = self.socketS.getRadarFrameByUDP()
+        img,judgeMsg = self.socketS.getRadarFrameByUDP()
         try:
             img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
             self.label_2.setPixmap(QtGui.QPixmap.fromImage(img_to_show))

@@ -42,7 +42,13 @@ public class HomeFragment extends Fragment {
 //                textView.setText(s);
 //            }
 //        });
-        fancyButton=(FancyButton) root.findViewById(R.id.btn_camera);
+        return root;
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        fancyButton=(FancyButton) getActivity().findViewById(R.id.btn_camera);
         fancyButton.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -51,6 +57,5 @@ public class HomeFragment extends Fragment {
             }
 
         });
-        return root;
     }
 }

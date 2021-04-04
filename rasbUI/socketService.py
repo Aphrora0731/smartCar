@@ -99,10 +99,13 @@ class SocketService():
 
     def getRadarFrameByUDP(self):#获取雷达帧函数
         try:
-            imgData=self.udpServer.recv(65535)
+            data=self.udpServer.recv(65535)
+            imgData=data[:-1]
+            judgeData=data[-1:]
+            judgeMsg=judgeData.decode('utf-8')
             image = np.asarray(bytearray(imgData), dtype="uint8") 
             img=cv2.imdecode(image,cv2.IMREAD_COLOR)
-            return img
+            return img,judgeMsg
         except Exception as e:
             pass
             # print(e)

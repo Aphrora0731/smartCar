@@ -8,10 +8,22 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarSize">48dp</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
             <!-- 隐藏标题栏 -->
-            <item name="windowNoTitle">true</item>
+            
+        <item name="windowNoTitle">true</item>
             <!-- 隐藏状态栏 -->
-            <item name="colorPrimaryDark">@color/colorPaleBlue</item>
+            
+        <item name="colorPrimaryDark">@color/colorPaleBlue</item>
     </style>
+
+    <style name="AppTheme.NoActionBar.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
