@@ -17,7 +17,7 @@ import java.net.Socket;
 
 public class TCPService extends Service {
     private String host="localhost";
-    private int port=8080;
+    private int port=8000;
     private Socket client=null;
     private TCPBinder mBinder=new TCPBinder();
     class TCPBinder extends Binder {

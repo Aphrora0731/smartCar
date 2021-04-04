@@ -17,6 +17,7 @@ import android.os.Bundle;
 
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -80,6 +81,7 @@ public class CameraActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
         serviceIntent=new Intent(context,UDPService.class);
+        Log.d("on start","before bind");
         bindService(serviceIntent,conn,BIND_AUTO_CREATE);
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);

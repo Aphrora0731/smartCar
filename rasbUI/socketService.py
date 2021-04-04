@@ -20,13 +20,11 @@ class SocketService():
         self.tcpServer=None
         self.tcpClient=None
         self.tcpClientAddr=None
-
         def listen():
             while True:
                 try:
                     msgData,addr=self.udpClient.recvfrom(1024)
                     message=msgData.decode('utf-8')
-                    # print(message,message == 'udp server')
                     if message == 'udp server':
                         self.host=addr[0]
                         print(self.host)
@@ -61,7 +59,7 @@ class SocketService():
 
     def startUDP(self):
         self.udpClient=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)#构造套接字，设置为UDP模式
-        self.udpClient.connect((self.host,8080))#连接到指定客户端的IP地址和端口
+        self.udpClient.connect((self.host,8888))#连接到指定客户端的IP地址和端口
 
     def sendFrameByUDP(self,frame):#发送帧函数，请在中控循环获取每一帧的摄像头数据并解析和显示画面的函数中循环调用，传入cap.read()函数获取的frame
         if self.host=='':

@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 //    private static Handler handler=new Handler();
 //    private Bitmap currentFrame;
 //    private Intent serviceIntent;
-//
+      private DatagramSocket socket;
 //    public static Context context;
 //
 //    private UDPService.UDPBinder binder;
@@ -86,18 +86,22 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 super.run();
                 try {
-                    DatagramSocket socket = new DatagramSocket();
+                    socket = new DatagramSocket();
                     socket.setBroadcast(true);
                     socket.setSoTimeout(10);
                     byte[] b ="udp server".getBytes(StandardCharsets.UTF_8);
                     DatagramPacket dpSend = new DatagramPacket(b, b.length,
-                            InetAddress.getByName("192.168.43.255"),8080);
-                    for(int i=0;i<=133333;i++){
+                            InetAddress.getByName("192.168.212.255"),8080);
+                    for(int i=0;i<=13333;i++){
                         socket.send(dpSend);
 //                        Log.d("inSendLoop","in");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }finally {
+                    if(socket!=null){
+                        socket.close();
+                    }
                 }
             }
         }.start();

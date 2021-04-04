@@ -12,6 +12,7 @@ import android.util.Log;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
 import java.net.SocketTimeoutException;
 import java.net.InetAddress;
 import java.net.Inet4Address;
@@ -22,7 +23,7 @@ import java.util.Enumeration;
 
 public class UDPService extends Service {
 
-    private int port=8080;
+    private int port=8888;
     private DatagramSocket socket=null;
     private UDPBinder mBinder=new UDPBinder();
     public class UDPBinder extends Binder {
@@ -39,6 +40,7 @@ public class UDPService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         startReceiveThread();
+        Log.d("on Bind","in");
         return mBinder;
     }
 
@@ -80,7 +82,14 @@ public class UDPService extends Service {
             public void run() {
                 super.run();
                 try{
-                    socket=new DatagramSocket(port);
+                    Log.d("inRecv","initPort");
+                    if(socket==null){
+                        socket = new DatagramSocket(null);
+                        socket.setReuseAddress(true);
+                        socket.bind(new InetSocketAddress(port));
+                    }
+//                    socket=new DatagramSocket(port);
+                    Log.d("inRecv","after initPort");
                     socket.setSoTimeout(10000);
                     byte[] data=new byte[65536];
                     DatagramPacket packet=new DatagramPacket(data,data.length);
