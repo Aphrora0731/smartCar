@@ -35,8 +35,9 @@ class Console(QMainWindow, Ui_MainWindow):
 
         
         self.camera_front = cv2.VideoCapture(1)
-        # self.camera_back = cv2.VideoCapture(2)
-        self.camera_blind = cv2.VideoCapture(2)
+        self.camera_back = cv2.VideoCapture(2)
+        self.camera_blind = self.camera_back
+        # self.camera_blind = cv2.VideoCapture(2)
         self.camera_drowsiness = cv2.VideoCapture(0)
         '''
         self.test_camera = cv2.VideoCapture(0)
@@ -153,6 +154,10 @@ class Console(QMainWindow, Ui_MainWindow):
         # img = cv2.resize(img, (img_width, img_height))
         img,msg = self.socketS.getRadarFrameByUDP()
         try:
+            img_h,img_w,ch = img.shape
+            background = cv2.imread("../Rplidar/radar.jpg")
+            background = cv2.resize(background,(img_h,img_w))
+            img = cv2.addWeighted(img,1,background,1,0)
             img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
             self.label_2.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
         except:
