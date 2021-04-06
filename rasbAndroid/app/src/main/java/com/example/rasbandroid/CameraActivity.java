@@ -31,8 +31,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class CameraActivity extends AppCompatActivity {
 
     private ImageView frameView;
+    private ImageView radarView;
     private static Handler handler=new Handler();
     private Bitmap currentFrame;
+    private Bitmap currentRadar;
     public static Context context;
 
     private Intent serviceIntent;
@@ -53,7 +55,8 @@ public class CameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        frameView=findViewById(R.id.imageView);
+        frameView=findViewById(R.id.frameImageView);
+        radarView=findViewById(R.id.radarImageView);
         imgBtn=findViewById(R.id.img_button);
         context=this;
         imgBtn.setOnClickListener(new View.OnClickListener(){
@@ -67,13 +70,18 @@ public class CameraActivity extends AppCompatActivity {
 
     public static void updateFrame(Bitmap frame){
         ((CameraActivity)context).currentFrame=frame;
-        handler.post(RefreshFrame);
+        handler.post(RefreshImage);
     }
 
-    private static Runnable RefreshFrame=new Runnable() {
+    public static void updateRadar(Bitmap radar){
+        ((CameraActivity)context).currentRadar=radar;
+        handler.post(RefreshImage);
+    }
+    private static Runnable RefreshImage=new Runnable() {
         @Override
         public void run() {
             ((CameraActivity)context).frameView.setImageBitmap(((CameraActivity)context).currentFrame);
+            ((CameraActivity)context).radarView.setImageBitmap(((CameraActivity)context).currentRadar);
         }
     };
 

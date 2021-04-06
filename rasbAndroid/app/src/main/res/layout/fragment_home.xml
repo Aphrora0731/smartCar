@@ -51,6 +51,7 @@
                 android:scaleType="centerInside"
                 ></mehdi.sakout.fancybuttons.FancyButton>
             <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/btn_record"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
