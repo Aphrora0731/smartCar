@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QMainWindow {
-background-color:white
+background-image:url(./background.jpg)
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -52,7 +52,7 @@ QMainWindow {
     <property name="geometry">
      <rect>
       <x>1190</x>
-      <y>730</y>
+      <y>890</y>
       <width>211</width>
       <height>91</height>
      </rect>
@@ -109,8 +109,8 @@ QPushButton:pressed{
    <widget class="QSlider" name="horizontalSlider">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>990</y>
+      <x>290</x>
+      <y>980</y>
       <width>671</width>
       <height>20</height>
      </rect>
@@ -176,7 +176,7 @@ QSlider::sub-page:vertical {
     <property name="geometry">
      <rect>
       <x>1190</x>
-      <y>610</y>
+      <y>740</y>
       <width>211</width>
       <height>91</height>
      </rect>
@@ -235,9 +235,15 @@ QPushButton:pressed{
      <rect>
       <x>1190</x>
       <y>90</y>
-      <width>541</width>
-      <height>471</height>
+      <width>600</width>
+      <height>600</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>600</width>
+      <height>600</height>
+     </size>
     </property>
     <property name="styleSheet">
      <string notr="true">QLabel{background-color:red}</string>
@@ -246,27 +252,11 @@ QPushButton:pressed{
      <string>雷达画布</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>-110</x>
-      <y>0</y>
-      <width>2251</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel{background-color:#3366ff}</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_4">
     <property name="geometry">
      <rect>
-      <x>1450</x>
-      <y>610</y>
+      <x>1470</x>
+      <y>740</y>
       <width>211</width>
       <height>91</height>
      </rect>
@@ -323,8 +313,8 @@ QPushButton:pressed{
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>1010</y>
+      <x>170</x>
+      <y>1000</y>
       <width>921</width>
       <height>21</height>
      </rect>
@@ -377,11 +367,14 @@ QPushButton:pressed{
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>1040</y>
+      <x>290</x>
+      <y>1030</y>
       <width>16</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{color:white}</string>
     </property>
     <property name="text">
      <string>0</string>
@@ -390,11 +383,14 @@ QPushButton:pressed{
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>1040</y>
+      <x>950</x>
+      <y>1030</y>
       <width>21</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{color:white}</string>
     </property>
     <property name="text">
      <string>40</string>
@@ -403,8 +399,8 @@ QPushButton:pressed{
    <widget class="QPushButton" name="pushButton_5">
     <property name="geometry">
      <rect>
-      <x>1450</x>
-      <y>730</y>
+      <x>1470</x>
+      <y>890</y>
       <width>211</width>
       <height>91</height>
      </rect>
@@ -479,6 +475,69 @@ QPushButton:pressed{
       <width>70</width>
       <height>70</height>
      </size>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>1320</x>
+      <y>30</y>
+      <width>171</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{color:white}</string>
+    </property>
+    <property name="text">
+     <string>雷达探测</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>10</y>
+      <width>211</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{color:white}</string>
+    </property>
+    <property name="text">
+     <string>车载监控画面</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>990</y>
+      <width>171</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{color:white}</string>
+    </property>
+    <property name="text">
+     <string>警报灵敏度</string>
     </property>
    </widget>
   </widget>
