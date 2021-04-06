@@ -115,7 +115,7 @@ def draw_box(frame, window_height, alterYRed):
     cv2.rectangle(mask, (0, window_height - alterYRed - alterYYellow - 8),
                   (1000, window_height - 130), (0, 255, 255),
                   -1)  # 黄线
-    cv2.rectangle(mask, (0, window_height - 130), (1000, window_height - 130), (0, 255, 0), 3)  # 绿线
+    # cv2.rectangle(mask, (0, window_height - 130), (1000, window_height - 130), (0, 255, 0), 3)  # 绿线
     # alpha 为第一张图片的透明度
     alpha = 1
     # beta 为第二张图片的透明度

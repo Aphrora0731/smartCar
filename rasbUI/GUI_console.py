@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'last_edition.ui'
+# Form implementation generated from reading ui file '.\last_edition.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -36,7 +36,7 @@ class Ui_MainWindow(object):
         self.label.setStyleSheet("QLabel{background-color:red}")
         self.label.setObjectName("label")
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(1190, 730, 211, 91))
+        self.pushButton_2.setGeometry(QtCore.QRect(1190, 890, 211, 91))
         self.pushButton_2.setStyleSheet("\n"
 "QPushButton{\n"
 "    border-style: outset;\n"
@@ -82,7 +82,7 @@ class Ui_MainWindow(object):
 "")
         self.pushButton_2.setObjectName("pushButton_2")
         self.horizontalSlider = QtWidgets.QSlider(self.centralwidget)
-        self.horizontalSlider.setGeometry(QtCore.QRect(130, 990, 671, 20))
+        self.horizontalSlider.setGeometry(QtCore.QRect(290, 980, 671, 20))
         self.horizontalSlider.setStyleSheet("\n"
 "QSlider::groove:horizontal {\n"
 "    height: 5px;\n"
@@ -129,7 +129,7 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setTickInterval(20)
         self.horizontalSlider.setObjectName("horizontalSlider")
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(1190, 610, 211, 91))
+        self.pushButton_3.setGeometry(QtCore.QRect(1190, 740, 211, 91))
         self.pushButton_3.setStyleSheet("\n"
 "QPushButton{\n"
 "    border-style: outset;\n"
@@ -175,11 +175,12 @@ class Ui_MainWindow(object):
 "")
         self.pushButton_3.setObjectName("pushButton_3")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(1190, 90, 541, 471))
+        self.label_2.setGeometry(QtCore.QRect(1190, 90, 600, 600))
+        self.label_2.setMinimumSize(QtCore.QSize(600, 600))
         self.label_2.setStyleSheet("QLabel{background-color:red}")
         self.label_2.setObjectName("label_2")
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_4.setGeometry(QtCore.QRect(1450, 610, 211, 91))
+        self.pushButton_4.setGeometry(QtCore.QRect(1470, 740, 211, 91))
         self.pushButton_4.setStyleSheet("\n"
 "QPushButton{\n"
 "    border-style: outset;\n"
@@ -225,7 +226,7 @@ class Ui_MainWindow(object):
 "")
         self.pushButton_4.setObjectName("pushButton_4")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 1010, 921, 21))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(170, 1000, 921, 21))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -261,13 +262,15 @@ class Ui_MainWindow(object):
         self.line_6.setObjectName("line_6")
         self.gridLayout.addWidget(self.line_6, 0, 5, 1, 1)
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(130, 1040, 16, 16))
+        self.label_4.setGeometry(QtCore.QRect(290, 1030, 16, 16))
+        self.label_4.setStyleSheet("QLabel{color:white}")
         self.label_4.setObjectName("label_4")
         self.label_6 = QtWidgets.QLabel(self.centralwidget)
-        self.label_6.setGeometry(QtCore.QRect(790, 1040, 21, 16))
+        self.label_6.setGeometry(QtCore.QRect(950, 1030, 21, 16))
+        self.label_6.setStyleSheet("QLabel{color:white}")
         self.label_6.setObjectName("label_6")
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_5.setGeometry(QtCore.QRect(1450, 730, 211, 91))
+        self.pushButton_5.setGeometry(QtCore.QRect(1470, 890, 211, 91))
         self.pushButton_5.setStyleSheet("\n"
 "QPushButton{\n"
 "    border-style: outset;\n"
@@ -316,10 +319,31 @@ class Ui_MainWindow(object):
         self.pushButton.setGeometry(QtCore.QRect(50, 10, 101, 51))
         self.pushButton.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("Exit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(".\\Exit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton.setIcon(icon)
         self.pushButton.setIconSize(QtCore.QSize(70, 70))
         self.pushButton.setObjectName("pushButton")
+        self.label_3 = QtWidgets.QLabel(self.centralwidget)
+        self.label_3.setGeometry(QtCore.QRect(1320, 30, 171, 51))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.label_3.setFont(font)
+        self.label_3.setStyleSheet("QLabel{color:white}")
+        self.label_3.setObjectName("label_3")
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        self.label_7.setGeometry(QtCore.QRect(570, 10, 211, 51))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.label_7.setFont(font)
+        self.label_7.setStyleSheet("QLabel{color:white}")
+        self.label_7.setObjectName("label_7")
+        self.label_5 = QtWidgets.QLabel(self.centralwidget)
+        self.label_5.setGeometry(QtCore.QRect(0, 990, 171, 51))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.label_5.setFont(font)
+        self.label_5.setStyleSheet("QLabel{color:white}")
+        self.label_5.setObjectName("label_5")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1881, 26))
@@ -349,3 +373,6 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "0"))
         self.label_6.setText(_translate("MainWindow", "40"))
         self.pushButton_5.setText(_translate("MainWindow", "疲劳检测"))
+        self.label_3.setText(_translate("MainWindow", "雷达探测"))
+        self.label_7.setText(_translate("MainWindow", "车载监控画面"))
+        self.label_5.setText(_translate("MainWindow", "警报灵敏度"))
