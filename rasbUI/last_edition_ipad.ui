@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1881</width>
-    <height>1150</height>
+    <width>1024</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,10 +35,10 @@ QMainWindow {
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>90</y>
-      <width>1071</width>
-      <height>861</height>
+      <x>30</x>
+      <y>80</y>
+      <width>540</width>
+      <height>481</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -51,10 +51,10 @@ QMainWindow {
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>1190</x>
-      <y>890</y>
-      <width>211</width>
-      <height>91</height>
+      <x>660</x>
+      <y>620</y>
+      <width>121</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -109,10 +109,10 @@ QPushButton:pressed{
    <widget class="QSlider" name="horizontalSlider">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>980</y>
-      <width>671</width>
-      <height>20</height>
+      <x>120</x>
+      <y>620</y>
+      <width>441</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -175,10 +175,10 @@ QSlider::sub-page:vertical {
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>1190</x>
-      <y>740</y>
-      <width>211</width>
-      <height>91</height>
+      <x>660</x>
+      <y>540</y>
+      <width>121</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -231,19 +231,16 @@ QPushButton:pressed{
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>1190</x>
-      <y>90</y>
-      <width>600</width>
-      <height>600</height>
+      <x>600</x>
+      <y>80</y>
+      <width>400</width>
+      <height>400</height>
      </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>600</width>
-      <height>600</height>
-     </size>
     </property>
     <property name="styleSheet">
      <string notr="true">QLabel{background-color:red}</string>
@@ -255,10 +252,10 @@ QPushButton:pressed{
    <widget class="QPushButton" name="pushButton_4">
     <property name="geometry">
      <rect>
-      <x>1470</x>
-      <y>740</y>
-      <width>211</width>
-      <height>91</height>
+      <x>820</x>
+      <y>540</y>
+      <width>121</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -313,9 +310,9 @@ QPushButton:pressed{
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>1000</y>
-      <width>921</width>
+      <x>80</x>
+      <y>670</y>
+      <width>531</width>
       <height>21</height>
      </rect>
     </property>
@@ -399,10 +396,10 @@ QPushButton:pressed{
    <widget class="QPushButton" name="pushButton_5">
     <property name="geometry">
      <rect>
-      <x>1470</x>
-      <y>890</y>
-      <width>211</width>
-      <height>91</height>
+      <x>820</x>
+      <y>620</y>
+      <width>121</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -457,10 +454,10 @@ QPushButton:pressed{
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>30</x>
       <y>10</y>
-      <width>101</width>
-      <height>51</height>
+      <width>61</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -480,15 +477,16 @@ QPushButton:pressed{
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>1320</x>
+      <x>790</x>
       <y>30</y>
-      <width>171</width>
-      <height>51</height>
+      <width>91</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>18</pointsize>
+      <family>Agency FB</family>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -501,15 +499,16 @@ QPushButton:pressed{
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>10</y>
-      <width>211</width>
-      <height>51</height>
+      <x>210</x>
+      <y>40</y>
+      <width>141</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>18</pointsize>
+      <family>Agency FB</family>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -522,15 +521,16 @@ QPushButton:pressed{
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>990</y>
-      <width>171</width>
-      <height>51</height>
+      <x>10</x>
+      <y>620</y>
+      <width>121</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>18</pointsize>
+      <family>Agency FB</family>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -546,7 +546,7 @@ QPushButton:pressed{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1881</width>
+     <width>1024</width>
      <height>26</height>
     </rect>
    </property>

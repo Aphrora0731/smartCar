@@ -117,13 +117,20 @@ def draw_box(frame, window_height, alterYRed):
                   (1000, window_height - 130), (0, 255, 255),
                   -1)  # 黄线
     '''
-    top_line = 0.3 * window_height
-    rate = 50
+    top_line = 0.6 * window_height
+    rate = 30
     top_end_x = rate + 50
     bottom_end_x = top_end_x + 50
-    points=np.array([[50,top_line],[top_end_x,top_line],[bottom_end_x,window_height],[50,window_height]],np.int32) #多边形的顶点坐标
-    points=np.array([[top_end_x,top_line],[bottom_end_x,top_line],[100+rate,window_height],[50,window_height]],np.int32)
-    cv2.fillPoly(mask,[points],(0,0,255))
+    red_points = np.array([[50, top_line], [top_end_x, top_line], [bottom_end_x, window_height], [50, window_height]],
+                          np.int32)  # 多边形的顶点坐标
+    yellow_points = np.array(
+        [[top_end_x, top_line],
+         [bottom_end_x-20, top_line],
+         [bottom_end_x + 130, window_height],
+         [bottom_end_x, window_height]
+         ], np.int32)
+    cv2.fillPoly(mask, [red_points], (0, 0, 255))
+    cv2.fillPoly(mask, [yellow_points], (0, 255, 255))
     # cv2.rectangle(mask, (0, window_height - 130), (1000, window_height - 130), (0, 255, 0), 3)  # 绿线
     # alpha 为第一张图片的透明度
     alpha = 1

@@ -109,7 +109,9 @@ def video_object(frame):
 
     mylib.draw_guideline(frame, window_height, usr_input)
     frame = cv2.resize(frame, (540, 480))
+    # frame = cv2.resize(frame, (601, 481))
     return frame
+
 
 
 def video_object_no_line(frame):   # 前方摄像头调用
@@ -251,12 +253,13 @@ def blind_object(frame):
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
 
-            if end - start > 0.6:
+            if end - start > 1:
                 if endY >= window_height - 5 - usr_input:
                     if not ALARM_ON:
                         ALARM_ON = True
                         t = Thread(target=mylib.alert_soundtest, args=[endY])
                         t.start()
+                        end = start
                     update_warning_time()
             ALARM_ON = False
             # draw the prediction on the frame
@@ -273,3 +276,4 @@ def blind_object(frame):
 
 # def get_radar():
  #   return mylib.radar_fun()
+

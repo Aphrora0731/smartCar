@@ -1,6 +1,6 @@
 from PyQt5.QtGui import QColor
 
-from GUI_console import Ui_MainWindow
+from GUI_console_ipad import Ui_MainWindow
 # from new import Ui_MainWindow
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsDropShadowEffect, QGraphicsOpacityEffect
@@ -14,7 +14,7 @@ import time
 from threading import Thread
 import mylib
 from is_sleep import is_sleep
-import detect
+import detect_ipad
 from socketService import SocketService
 
 
@@ -39,9 +39,8 @@ class Console(QMainWindow, Ui_MainWindow):
         # self.camera_blind = self.camera_back
         # self.camera_blind = cv2.VideoCapture(2)
         # self.camera_drowsiness = cv2.VideoCapture(0)
-        
-        self.test_camera = cv2.VideoCapture(1)
-        
+        self.test_camera = cv2.VideoCapture(0)
+
         self.init_slot()
         self.socketS=SocketService()
         self.setWindowFlags(Qt.FramelessWindowHint)
@@ -58,7 +57,8 @@ class Console(QMainWindow, Ui_MainWindow):
         self.font = QtGui.QFont()
         self.font.setFamily('微软雅黑')
         self.font.setBold(True)
-        self.font.setPointSize(16)
+        # self.font.setPointSize(16)
+        self.font.setPointSize(12)
         self.font.setWeight(50)
         op = QGraphicsOpacityEffect()
         # 设置透明度的值，0.0到1.0，最小值0是透明，1是不透明
@@ -84,18 +84,24 @@ class Console(QMainWindow, Ui_MainWindow):
     def play_front_camera(self):
         if not self.is_front:
             return
-        img_width = 1200
-        img_height = 900
-        # flag, frame = self.camera_front.read()        
+        # 原来的图像大小
+        # img_width = 1200
+        # img_height = 900
+        # 平板上的图像大小
+        img_width = 601
+        img_height = 481
+
+        # flag, frame = self.camera_front.read()
         flag, frame = self.test_camera.read()
 
-        img, is_danger = detect.brake_light(frame)  # 红灯检测
+        img, is_danger = detect_ipad.brake_light(frame)  # 红灯检测
         if is_danger:
             print("danger")
-        img = detect.video_object_no_line(frame)
+
+        img = detect_ipad.video_object_no_line(frame)
         self.socketS.sendFrameByUDP(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img, (img_width, img_height))
+        # img = cv2.resize(img, (img_width, img_height))
         # 请不要动下面这两句神秘的代码
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
         self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
@@ -103,15 +109,19 @@ class Console(QMainWindow, Ui_MainWindow):
     def play_back_camera(self):
         if not self.is_back:
             return
-        img_width = 1200
-        img_height = 900
+        # 原来的图像大小
+        # img_width = 1200
+        # img_height = 900
+        # 平板上的图像大小
+        img_width = 601
+        img_height = 481
         # flag, frame = self.camera_back.read()
         flag, frame = self.test_camera.read()
-        img = detect.video_object(frame)
+        img = detect_ipad.video_object(frame)
         self.socketS.sendFrameByUDP(img)
         # cv2.imshow("image",img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img, (img_width, img_height))
+        # img = cv2.resize(img, (img_width, img_height))
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
         self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
@@ -119,45 +129,52 @@ class Console(QMainWindow, Ui_MainWindow):
     def play_blind(self):
         if not self.is_blind_area:
             return
-        img_width = 1200
-        img_height = 900
+        # 原来的图像大小
+        # img_width = 1200
+        # img_height = 900
+        # 现在的图像大小
+        img_width = 601
+        img_height = 481
         # flag, frame = self.camera_blind.read()
         flag, frame = self.test_camera.read()
-        img = detect.blind_object(frame)
+        img = detect_ipad.blind_object(frame)
         self.socketS.sendFrameByUDP(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img, (img_width, img_height))
+        # img = cv2.resize(img, (img_width, img_height))
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
         self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
     def play_detect_drowsiness(self):
         if not self.is_drowsiness:
             return
-        img_width = 1200
-        img_height = 900
-        
+        # 原来的图像大小
+        # img_width = 1200
+        # img_height = 900
+        # 平板大小
+        img_width = 601
+        img_height = 481
         # flag, frame = self.camera_drowsiness.read()
         flag, frame = self.test_camera.read()
 
         img = is_sleep(frame)
         self.socketS.sendFrameByUDP(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img, (img_width, img_height))
+        # img = cv2.resize(img, (img_width, img_height))
         img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
         self.label.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
 
 
     def play_radar(self):
-        img_width = 900
-        img_height = 700
+        img_width = 400
+        img_height = 400
         #img = detect.get_radar()
         # img = cv2.resize(img, (img_width, img_height))
-        img,msg = self.socketS.getRadarFrameByUDP()
+        img, msg = self.socketS.getRadarFrameByUDP()
         try:
-            img_h,img_w,ch = img.shape
+            img_h, img_w, ch = img.shape
             background = cv2.imread("../Rplidar/radar.jpg")
-            background = cv2.resize(background,(img_h,img_w))
-            img = cv2.addWeighted(img,1,background,1,0)
+            background = cv2.resize(background, (img_h, img_w))
+            img = cv2.addWeighted(img, 1, background, 1, 0)
             self.socketS.sendRadarByUDP(img)
             img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
             self.label_2.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
@@ -167,10 +184,10 @@ class Console(QMainWindow, Ui_MainWindow):
     # slider的槽函数，用来改变距离敏感程度
     def slider_moved(self, value):
         value = value / 20
-        detect.change_value(value)
+        detect_ipad.change_value(value)
 
     def update_warning_time(self):
-        detect.update_warning_time()
+        detect_ipad.update_warning_time()
 
     def front_camera(self):
         self.is_front = True

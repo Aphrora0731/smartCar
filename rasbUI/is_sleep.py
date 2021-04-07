@@ -14,11 +14,19 @@ import imutils
 import time
 import dlib
 import cv2
+import winsound
+
+# def sound_alarm(path):
+#     # play an alarm sound
+#     playsound.playsound(path)
 
 
-def sound_alarm(path):
-    # play an alarm sound
-    playsound.playsound(path)
+def sound_alarm():
+    duration = 500
+    freq = 1500
+    winsound.Beep(freq, duration)
+    time.sleep(0.3)
+    winsound.Beep(freq, duration)
 
 
 def eye_aspect_ratio(eye):
@@ -47,7 +55,7 @@ def eye_aspect_ratio(eye):
 #   眼球必须低于阈值才能引起眼睛不适
 # 警报
 # EYE_AR_THRESH = 0.3 最初的参数
-EYE_AR_THRESH = 0.25  # 眼睛的宽和长之比
+EYE_AR_THRESH = 0.31  # 眼睛的宽和长之比
 EYE_AR_CONSEC_FRAMES = 48  # 眼睛连续闭上的帧数，如果超过48帧就发出警报
 
 # initialize the frame counter as well as a boolean used to
@@ -122,13 +130,12 @@ def is_sleep(frame):
                     # and if so, start a thread to have the alarm
                     # sound played in the background
                     if True:
-                        t = Thread(target=sound_alarm,
-                                   args=("./alarm.wav",))
+                        t = Thread(target=sound_alarm)
                         t.deamon = True  # 守护进程
                         t.start()
 
                 # draw an alarm on the frame
-                cv2.putText(frame, "WARNING!", (10, 30),  # 1、图片  2、 显示的字符串 3、第一个字符左下角的坐标 4、字体结构初始化
+                cv2.putText(frame, "don't sleep!", (10, 30),  # 1、图片  2、 显示的字符串 3、第一个字符左下角的坐标 4、字体结构初始化
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)  # 5、字体的颜色  6、 字体宽度
 
         # otherwise, the eye aspect ratio is not below the blink
@@ -140,9 +147,11 @@ def is_sleep(frame):
         # draw the computed eye aspect ratio on the frame to help
         # with debugging and setting the correct eye aspect ratio
         # thresholds and frame counters
-        cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),  # 在屏幕上显示当前眼睛的横纵比
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        # cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),  # 在屏幕上显示当前眼睛的横纵比
+        #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
     # show the frame
+    # 平板像素值
+    frame = cv2.resize(frame, (540, 480))
     return frame
 # do a bit of cleanup
