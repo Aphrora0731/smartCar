@@ -23,8 +23,10 @@ import java.util.Enumeration;
 
 public class UDPService extends Service {
 
-    private int port=8888;
-    private DatagramSocket socket=null;
+    private int framePort=8081;
+    private int radarPort=8082;
+    private DatagramSocket frameSocket=null;
+    private DatagramSocket radarSocket=null;
     private UDPBinder mBinder=new UDPBinder();
     public class UDPBinder extends Binder {
     }
@@ -46,10 +48,15 @@ public class UDPService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        if(socket!=null){
-            socket.close();
-            socket=null;
+        if(frameSocket!=null){
+            frameSocket.close();
+            frameSocket=null;
             CameraActivity.updateFrame(null);
+        }
+        if(radarSocket!=null){
+            radarSocket.close();
+            radarSocket=null;
+            CameraActivity.updateRadar(null);
         }
         return true;
     }
@@ -83,23 +90,23 @@ public class UDPService extends Service {
                 super.run();
                 try{
                     Log.d("inRecv","initPort");
-                    if(socket==null){
-                        socket = new DatagramSocket(null);
-                        socket.setReuseAddress(true);
-                        socket.bind(new InetSocketAddress(port));
+                    if(frameSocket==null){
+                        frameSocket = new DatagramSocket(null);
+                        frameSocket.setReuseAddress(true);
+                        frameSocket.bind(new InetSocketAddress(framePort));
                     }
 //                    socket=new DatagramSocket(port);
                     Log.d("inRecv","after initPort");
-                    socket.setSoTimeout(10000);
+                    frameSocket.setSoTimeout(10000);
                     byte[] data=new byte[65536];
                     DatagramPacket packet=new DatagramPacket(data,data.length);
                     Log.d("inRecv","initsucess");
 
                     System.out.println("Local HostAddress: "+getIP());
-                    while(socket!=null){
+                    while(frameSocket!=null){
                         try{
 //                            Log.d("inRecvLoop","beforerecv");
-                            socket.receive(packet);
+                            frameSocket.receive(packet);
                             Log.d("inRecvLoop","inrecv");
                         }catch (SocketTimeoutException timeoute){
                             Log.d("inRecvLoop",timeoute.getMessage());
@@ -110,6 +117,46 @@ public class UDPService extends Service {
                         }
                         Bitmap bitmap= BitmapFactory.decodeByteArray(data,0,packet.getLength());
                         CameraActivity.updateFrame(bitmap);
+                    }
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                try{
+                    Log.d("inRecv","initPort");
+                    if(radarSocket==null){
+                        radarSocket = new DatagramSocket(null);
+                        radarSocket.setReuseAddress(true);
+                        radarSocket.bind(new InetSocketAddress(radarPort));
+                    }
+//                    socket=new DatagramSocket(port);
+                    Log.d("inRecv","after initPort");
+                    radarSocket.setSoTimeout(10000);
+                    byte[] data=new byte[65536];
+                    DatagramPacket packet=new DatagramPacket(data,data.length);
+                    Log.d("inRecv","initsucess");
+
+                    System.out.println("Local HostAddress: "+getIP());
+                    while(radarSocket!=null){
+                        try{
+//                            Log.d("inRecvLoop","beforerecv");
+                            radarSocket.receive(packet);
+                            Log.d("inRecvLoop","inrecv");
+                        }catch (SocketTimeoutException timeoute){
+                            Log.d("inRecvLoop",timeoute.getMessage());
+                            continue;
+                        }catch (IOException ioe){
+                            Log.d("inRecvLoop","ioe");
+                            throw ioe;
+                        }
+                        Bitmap bitmap= BitmapFactory.decodeByteArray(data,0,packet.getLength());
+                        CameraActivity.updateRadar(bitmap);
                     }
                 }catch (IOException e){
                     e.printStackTrace();

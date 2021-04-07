@@ -24,11 +24,14 @@ import mehdi.sakout.fancybuttons.FancyButton;
 
 import com.example.rasbandroid.CameraActivity;
 import com.example.rasbandroid.R;
+import com.example.rasbandroid.RecordActivity;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private FancyButton fancyButton;
+    private FancyButton cameraButton;
+    private FancyButton recordButton;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,11 +51,20 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        fancyButton=(FancyButton) getActivity().findViewById(R.id.btn_camera);
-        fancyButton.setOnClickListener(new OnClickListener(){
+        cameraButton=(FancyButton) getActivity().findViewById(R.id.btn_camera);
+        cameraButton.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(), CameraActivity.class);
+                startActivity(intent);
+            }
+
+        });
+        recordButton=(FancyButton) getActivity().findViewById(R.id.btn_record);
+        recordButton.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), RecordActivity.class);
                 startActivity(intent);
             }
 

@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     socket.setSoTimeout(10);
                     byte[] b ="udp server".getBytes(StandardCharsets.UTF_8);
                     DatagramPacket dpSend = new DatagramPacket(b, b.length,
-                            InetAddress.getByName("192.168.212.255"),8080);
+                            InetAddress.getByName("192.168.52.255"),8080);
                     for(int i=0;i<=13333;i++){
                         socket.send(dpSend);
 //                        Log.d("inSendLoop","in");

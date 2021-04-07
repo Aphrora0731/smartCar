@@ -158,6 +158,7 @@ class Console(QMainWindow, Ui_MainWindow):
             background = cv2.imread("../Rplidar/radar.jpg")
             background = cv2.resize(background,(img_h,img_w))
             img = cv2.addWeighted(img,1,background,1,0)
+            self.socketS.sendRadarByUDP(img)
             img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
             self.label_2.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
         except:
