@@ -1,7 +1,7 @@
 #pragma once
 #include "opencv_lidar.h"
 #define PI 3.141592653
-#define scale  25
+#define scale  100
 LidarImage::LidarImage(void)
 {
 }

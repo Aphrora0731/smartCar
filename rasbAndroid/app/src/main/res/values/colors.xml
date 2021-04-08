@@ -9,4 +9,6 @@
     <color name="colorWhite">#fcffff</color>
     <color name="colorWhiteBlue">#1b3f8d</color>
     <color name="colorRoyalBlue">#234da3</color>
+    <color name="colorCyan">#13f9ed</color>
+    <color name="colorCornflowerBlue">#1f2a68</color>
 </resources>

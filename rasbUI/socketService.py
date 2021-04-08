@@ -32,7 +32,7 @@ class SocketService():
                         print(self.host)
                         self.udpClient1.close()
                         self.udpClient1=None
-                        # self.startTCP()
+                        self.startTCP()
                         self.startUDP()
                         break
                     self.host=''
@@ -52,9 +52,7 @@ class SocketService():
             while True:
                 if self.tcpClient is None:
                     self.tcpClient,self.tcpClientAddr = self.tcpServer.accept()
-                elif not self.tcpClient.recv(1024):
-                    self.tcpClient.close()
-                    self.tcpClient=None
+                    break
 
         t=threading.Thread(target=link_loop,daemon=True)
         t.start()
@@ -97,20 +95,20 @@ class SocketService():
         t=threading.Thread(target=runSend,daemon=True)
         t.start()
 
-    def sendCmdByTCP(self,command):#发送帧函数，请在中控循环获取每一帧的摄像头数据并解析和显示画面的函数中循环调用，传入cap.read()函数获取的frame
+    def sendFrameByTCP(self,frame):#发送帧函数，请在中控循环获取每一帧的摄像头数据并解析和显示画面的函数中循环调用，传入cap.read()函数获取的frame
         if self.host=='':
             # print('客户端未连接！')
             return
-        if not self.isTCPLinked:
+        if self.tcpClient is None:
             # print('TCP未连接！')
             return
         def runSend():
             try:
-                cmdData=command.encode('utf-8')#将字符串转换为二进制串
-                self.tcpClient.sendall(cmdData)#发送全部二进制串
+                result,imgData=cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,50])#编码为JPEG格式的二进制字符串
+                self.tcpClient.sendall(imgData)#发送二进制串
             except Exception as e:
                 self.tcpClient.sendall(struct.pack('b',1))
-                print(e)
+                # print(e)
         
         t=threading.Thread(target=runSend,daemon=True)
         t.start()

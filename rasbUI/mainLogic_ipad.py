@@ -39,8 +39,14 @@ class Console(QMainWindow, Ui_MainWindow):
         # self.camera_blind = self.camera_back
         # self.camera_blind = cv2.VideoCapture(2)
         # self.camera_drowsiness = cv2.VideoCapture(0)
-        self.test_camera = cv2.VideoCapture(0)
-
+        # self.test_camera = cv2.VideoCapture(0)
+        
+        self.camera_front = cv2.VideoCapture(1)
+        self.camera_back = cv2.VideoCapture(2)
+        self.camera_blind = self.camera_back
+        # self.camera_blind = cv2.VideoCapture(2)
+        self.camera_drowsiness = cv2.VideoCapture(3)
+        
         self.init_slot()
         self.socketS=SocketService()
         self.setWindowFlags(Qt.FramelessWindowHint)
@@ -91,8 +97,8 @@ class Console(QMainWindow, Ui_MainWindow):
         img_width = 601
         img_height = 481
 
-        # flag, frame = self.camera_front.read()
-        flag, frame = self.test_camera.read()
+        flag, frame = self.camera_front.read()
+        # flag, frame = self.test_camera.read()
 
         img, is_danger = detect_ipad.brake_light(frame)  # 红灯检测
         if is_danger:
@@ -115,8 +121,8 @@ class Console(QMainWindow, Ui_MainWindow):
         # 平板上的图像大小
         img_width = 601
         img_height = 481
-        # flag, frame = self.camera_back.read()
-        flag, frame = self.test_camera.read()
+        flag, frame = self.camera_back.read()
+        # flag, frame = self.test_camera.read()
         img = detect_ipad.video_object(frame)
         self.socketS.sendFrameByUDP(img)
         # cv2.imshow("image",img)
@@ -135,8 +141,7 @@ class Console(QMainWindow, Ui_MainWindow):
         # 现在的图像大小
         img_width = 601
         img_height = 481
-        # flag, frame = self.camera_blind.read()
-        flag, frame = self.test_camera.read()
+        flag, frame = self.camera_blind.read()
         img = detect_ipad.blind_object(frame)
         self.socketS.sendFrameByUDP(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -154,8 +159,8 @@ class Console(QMainWindow, Ui_MainWindow):
         img_width = 601
         img_height = 481
         # flag, frame = self.camera_drowsiness.read()
-        flag, frame = self.test_camera.read()
-
+        flag, frame = self.camera_drowsiness.read()
+ 
         img = is_sleep(frame)
         self.socketS.sendFrameByUDP(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -176,6 +181,7 @@ class Console(QMainWindow, Ui_MainWindow):
             background = cv2.resize(background, (img_h, img_w))
             img = cv2.addWeighted(img, 1, background, 1, 0)
             self.socketS.sendRadarByUDP(img)
+            img = cv2.resize(img,(img_height,img_width))
             img_to_show = QtGui.QImage(img.data, img.shape[1], img.shape[0], QtGui.QImage.Format_RGB888)
             self.label_2.setPixmap(QtGui.QPixmap.fromImage(img_to_show))
         except:

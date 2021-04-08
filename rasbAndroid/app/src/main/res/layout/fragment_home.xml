@@ -22,94 +22,109 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:background="@color/colorMidnight"
         app:layout_constraintTop_toBottomOf="@+id/text_home"
-        tools:layout_editor_absoluteX="37dp" >
+        tools:layout_editor_absoluteX="37dp">
+
         <TableRow
-            android:layout_weight="1"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp">
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1">
+
             <mehdi.sakout.fancybuttons.FancyButton
                 android:id="@+id/btn_camera"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
-                fancy:fb_radius="10dp"
-                fancy:fb_defaultColor="@color/colorPaleBlue"
-                fancy:fb_iconResource="@drawable/ic_camera_pressed"
-                fancy:fb_iconPosition="top"
-                fancy:fb_iconPaddingBottom="0dp"
-                fancy:fb_text="图像"
-                fancy:fb_textSize="15dp"
-                fancy:fb_textGravity="center_horizontal"
+                android:layout_weight="1"
                 android:scaleType="centerInside"
-                ></mehdi.sakout.fancybuttons.FancyButton>
+                fancy:fb_defaultColor="@color/colorPaleBlue"
+                fancy:fb_iconPaddingBottom="0dp"
+                fancy:fb_iconPosition="top"
+                fancy:fb_iconResource="@drawable/ic_camera_pressed"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="图像"
+                fancy:fb_textGravity="center_horizontal"
+                fancy:fb_textSize="15dp"></mehdi.sakout.fancybuttons.FancyButton>
+
             <mehdi.sakout.fancybuttons.FancyButton
                 android:id="@+id/btn_record"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
-                fancy:fb_radius="10dp"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
                 fancy:fb_defaultColor="@color/colorPaleBlue"
+                fancy:fb_iconPaddingBottom="0dp"
+                fancy:fb_iconPosition="top"
                 fancy:fb_iconResource="@drawable/ic_record_pressed"
-                fancy:fb_iconPosition="top"
-                fancy:fb_iconPaddingBottom="0dp"
+                fancy:fb_radius="10dp"
                 fancy:fb_text="行车记录"
-                fancy:fb_textSize="15dp"
                 fancy:fb_textGravity="center_horizontal"
-                android:scaleType="centerInside"
-                ></mehdi.sakout.fancybuttons.FancyButton>
+                fancy:fb_textSize="15dp"></mehdi.sakout.fancybuttons.FancyButton>
         </TableRow>
+
         <TableRow
-            android:layout_weight="1"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp">
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1">
+
             <mehdi.sakout.fancybuttons.FancyButton
-                android:layout_weight="1"
-                android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
-                fancy:fb_radius="10dp"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
                 fancy:fb_defaultColor="@color/colorPaleBlue"
+                fancy:fb_iconPaddingBottom="0dp"
+                fancy:fb_iconPosition="top"
                 fancy:fb_iconResource="@drawable/ic_location_pressed"
-                fancy:fb_iconPosition="top"
-                fancy:fb_iconPaddingBottom="0dp"
-                fancy:fb_text="定位"
-                fancy:fb_textSize="15dp"
-                fancy:fb_textGravity="center_horizontal"
-                android:scaleType="centerInside"
-            ></mehdi.sakout.fancybuttons.FancyButton>
-            <mehdi.sakout.fancybuttons.FancyButton
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 fancy:fb_radius="10dp"
-                fancy:fb_defaultColor="@color/colorPaleBlue"
-                fancy:fb_iconResource="@drawable/ic_more_pressed"
-                fancy:fb_iconPosition="top"
-                fancy:fb_iconPaddingBottom="0dp"
-                fancy:fb_text="更多"
-                fancy:fb_textSize="15dp"
+                fancy:fb_text="定位"
                 fancy:fb_textGravity="center_horizontal"
+                fancy:fb_textSize="15dp"></mehdi.sakout.fancybuttons.FancyButton>
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
                 android:scaleType="centerInside"
-                ></mehdi.sakout.fancybuttons.FancyButton>
+                fancy:fb_defaultColor="@color/colorPaleBlue"
+                fancy:fb_iconPaddingBottom="0dp"
+                fancy:fb_iconPosition="top"
+                fancy:fb_iconResource="@drawable/ic_more_pressed"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="更多"
+                fancy:fb_textGravity="center_horizontal"
+                fancy:fb_textSize="15dp"></mehdi.sakout.fancybuttons.FancyButton>
         </TableRow>
     </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/layout_border"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+        tools:layout_editor_absoluteX="8dp"></LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

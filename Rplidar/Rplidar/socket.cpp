@@ -40,7 +40,7 @@ int main()
 	SOCKET sockSrv = socket(AF_INET, SOCK_DGRAM, 0);
 
 	sockaddr_in  addrSrv;
-	addrSrv.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");//输入你想通信的她（此处是本机内部）
+	addrSrv.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");//输入你想通信  ，的她（此处是本机内部）
 	addrSrv.sin_family = AF_INET;
 	addrSrv.sin_port = htons(8088);
 
