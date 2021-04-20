@@ -31,10 +31,13 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,21 +47,24 @@ public class MainActivity extends AppCompatActivity {
 //    private Button disconnectBtn;
 //    private static Handler handler=new Handler();
 //    private Bitmap currentFrame;
-//    private Intent serviceIntent;
-      private DatagramSocket socket;
-//    public static Context context;
+      private InetAddress centerIP;
+      private Intent serviceIntent;
+      private DatagramSocket sendSocket;
+      private DatagramSocket recvSocket;
+    //    public static Context context;
 //
-//    private UDPService.UDPBinder binder;
-//    private ServiceConnection conn=new ServiceConnection() {
-//        @Override
-//        public void onServiceConnected(ComponentName name, IBinder service) {
-//            binder=(UDPService.UDPBinder)service;
-//        }
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName name) {
-//        }
-//    };
+    private TCPService.TCPBinder binder;
+
+    private ServiceConnection conn=new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            binder=(TCPService.TCPBinder)service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
 
 
     @Override
@@ -77,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         socketInit();
-
     }
 
     private void socketInit(){
@@ -86,28 +91,49 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 super.run();
                 try {
-                    socket = new DatagramSocket();
-                    socket.setBroadcast(true);
-                    socket.setSoTimeout(10);
+                    sendSocket = new DatagramSocket();
+                    sendSocket.setBroadcast(true);
+                    recvSocket=new DatagramSocket(8081);
+                    recvSocket.setSoTimeout(1000);
                     byte[] b ="udp server".getBytes(StandardCharsets.UTF_8);
+                    System.out.println("broadcastip:"+getBroadcastIP());
                     DatagramPacket dpSend = new DatagramPacket(b, b.length,
-                            InetAddress.getByName("192.168.52.255"),8080);
+                            InetAddress.getByName(getBroadcastIP()),8080);
+                    byte[] c=new byte[1024];
+                    DatagramPacket dpRecv=new DatagramPacket(c,c.length);
                     for(int i=0;i<=13333;i++){
-                        socket.send(dpSend);
-//                        Log.d("inSendLoop","in");
+                        sendSocket.send(dpSend);
+                        try {
+                            recvSocket.receive(dpRecv);
+                            String answer = new String(c,"utf-8").trim();
+                            Log.d("Recved", answer);
+                            if (answer.contains("udp client")) {
+                                centerIP = dpRecv.getAddress();
+                                Log.d("inSendLoop", "recv ip");
+                                startTCPService();
+                                break;
+                            }
+                        }
+                        catch (SocketTimeoutException timeoute){
+                            Log.d("inRSendLoop",timeoute.getMessage());
+                            continue;
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }finally {
-                    if(socket!=null){
-                        socket.close();
+                    if(sendSocket!=null){
+                        sendSocket.close();
+                    }
+                    if(recvSocket!=null){
+                        recvSocket.close();
                     }
                 }
             }
         }.start();
     }
 
-    private static String getIP(){
+    private String getIP(){
 
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -128,22 +154,32 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    private  String getBroadcastIP(){
+        String myIP=getIP();
+        int dotIndex=myIP.lastIndexOf('.');
+        String subIP=myIP.substring(0,dotIndex);
+        return subIP.concat(".255");
+    }
+
+    private void startTCPService(){
+        serviceIntent=new Intent(this,TCPService.class);
+        Bundle data=new Bundle();
+        Log.d("onStart",centerIP.toString());
+        data.putSerializable("IP",centerIP);
+        serviceIntent.putExtras(data);
+        bindService(serviceIntent,conn,BIND_AUTO_CREATE);
+    }
+
     @Override
     public void onConfigurationChanged (Configuration newConfig){
         super.onConfigurationChanged(newConfig);
     }
-//    @Override
-//    protected void onStart(){
-//        super.onStart();
-//        serviceIntent=new Intent(this,UDPService.class);
-//        bindService(serviceIntent,conn,BIND_AUTO_CREATE);
-//    }
-//
-//    @Override
-//    protected void onStop(){
-//        super.onStop();
-//        unbindService(conn);
-//    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        if(centerIP !=null)
+            unbindService(conn);
+    }
 //    public static void updateFrame(Bitmap frame){
 //        ((MainActivity)context).currentFrame=frame;
 //        handler.post(RefreshFrame);

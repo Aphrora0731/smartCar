@@ -34,18 +34,14 @@ class Console(QMainWindow, Ui_MainWindow):
         self.timer_2 = QTimer(self)
 
         
-        # self.camera_front = cv2.VideoCapture(1)
-        # self.camera_back = cv2.VideoCapture(2)
-        # self.camera_blind = self.camera_back
-        # self.camera_blind = cv2.VideoCapture(2)
-        # self.camera_drowsiness = cv2.VideoCapture(0)
-        # self.test_camera = cv2.VideoCapture(0)
         
         self.camera_front = cv2.VideoCapture(1)
         self.camera_back = cv2.VideoCapture(2)
         self.camera_blind = self.camera_back
         # self.camera_blind = cv2.VideoCapture(2)
-        self.camera_drowsiness = cv2.VideoCapture(3)
+        self.camera_drowsiness = cv2.VideoCapture(0)
+        
+        # self.test_camera = cv2.VideoCapture(0)
         
         self.init_slot()
         self.socketS=SocketService()

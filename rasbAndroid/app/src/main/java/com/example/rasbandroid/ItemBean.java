@@ -3,35 +3,29 @@ package com.example.rasbandroid;
 import android.graphics.drawable.Drawable;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class ItemBean extends BaseMultiBean {
-    private File image1;
-    private File image2;
-    private File image3;
+    private ArrayList<File> images;
+    private int imageNum;
 
-    public ItemBean(File image1, File image2, File image3){
-        this.image1=image1;
-        this.image2=image2;
-        this.image3=image3;
+    public ItemBean(ArrayList<File> imageList){
+        this.images=imageList;
         this.type=TYPE_ITEM;
+        this.imageNum=imageList.size();
     }
-
     public File getImage(int num){
-        if(num==1)
-            return image1;
-        else if(num==2)
-            return image2;
+        if(num>imageNum)return null;
         else
-            return image3;
+            return images.get(num-1);
     }
-
+    public int getNum(){
+        return imageNum;
+    }
     public void setImage(File image,int num) {
-        if(num==1)
-            this.image1=image;
-        else if(num==2)
-            this.image2=image;
+        if(num>imageNum)return;
         else
-            this.image3=image;
+            this.images.set(num-1,image);
 
     }
 }

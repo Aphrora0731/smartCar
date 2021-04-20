@@ -49,9 +49,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(viewType==BaseMultiBean.TYPE_ITEM){//为内容形式的列表项绑定数据
             ItemBean itemBean= (ItemBean) getItem(position);
             ItemViewHolder itemViewHolder= (ItemViewHolder) holder;
-            Glide.with(context).load(itemBean.getImage(1)).into(itemViewHolder.itemImageView1);
-            Glide.with(context).load(itemBean.getImage(2)).into(itemViewHolder.itemImageView2);
-            Glide.with(context).load(itemBean.getImage(3)).into(itemViewHolder.itemImageView3);
+            for(int i =1;i<=itemBean.getNum();i++)
+                Glide.with(context).load(itemBean.getImage(i)).into(itemViewHolder.getImageView(i));
         }
     }
     private BaseMultiBean getItem(int position){
@@ -79,6 +78,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemImageView2=itemView.findViewById(R.id.item_image2);
             itemImageView3=itemView.findViewById(R.id.item_image3);
 
+        }
+        public ImageView getImageView(int num) {
+            if(num==1)
+                return itemImageView1;
+            else if(num==2)
+                return  itemImageView2;
+            else if(num==3)
+                return  itemImageView3;
+            else{
+                System.out.println("item bean num error!");
+                return null;
+            }
         }
     }
 

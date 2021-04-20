@@ -17,6 +17,7 @@ import dlib
 from imutils import face_utils
 from threading import Thread
 import winsound
+import socketService
 
 # set constant
 size = 400
@@ -68,7 +69,7 @@ def get_video():
 
 # 从参数frame中识别物体并返回加了框的图像
 # loop over the frames from the video stream
-def video_object(frame):
+def video_object(frame,socket):
     global usr_input, end, ALARM_ON
     # grab the frame from the threaded video stream and resize it
     # to have a maximum width of 400 pixels
@@ -97,6 +98,7 @@ def video_object(frame):
                         ALARM_ON = True
                         t = Thread(target=mylib.alert_soundtest, args=[endY])
                         t.start()
+                        socket.sendFrameByTCP(frame)
                     end = start
                     update_warning_time()
             ALARM_ON = False
@@ -181,6 +183,8 @@ def brake_light(image):
         # large, then add it to our mask of "large blobs"
         if 10 < numPixels:
             mask = cv2.add(mask, labelMask)
+            # frame,is_close = getRadarFrameByUDP()
+            # if is_close =='y':
             light_on = True
 
     # No brake light detected
@@ -220,7 +224,7 @@ def update_warning_time():
 
 
 # 盲区检测
-def blind_object(frame):
+def blind_object(frame,socket):
     global usr_input, end, ALARM_ON
     # grab the frame from the threaded video stream and resize it
     # to have a maximum width of 400 pixels
@@ -257,6 +261,7 @@ def blind_object(frame):
                         ALARM_ON = True
                         t = Thread(target=mylib.alert_soundtest, args=[endY])
                         t.start()
+                        socket.sendFrameByTCP(frame)
                     update_warning_time()
             ALARM_ON = False
             # draw the prediction on the frame
